@@ -1,9 +1,11 @@
 <?php
-    $passed = true;
-    $posted = false;
+    $postrequested = false;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $posted = true;
+        
+        $passed = true;
+        $postrequested = true;
+
         require "funciones.php";
 
         if(empty($_SERVER['CONTENT_TYPE'])) {
@@ -66,14 +68,7 @@
 
             <div class="second-half">
                 <?php
-                if (!$passed) {
-                    echo "<ul class='vertical-menu'>
-                        <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
-                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
-                        </ul>";
-                }
-
-                if (!$posted) {
+                if (!$postrequested) {
                     echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
                         <div id='main-div' class='vertical-form'>
                             <h3 id='region-origen-h'>Región Origen:</h3>
@@ -128,6 +123,16 @@
                     </div>
                     <br>
                     <br>";
+                } else if (!$passed) {
+                    echo "<ul class='vertical-menu'>
+                        <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
+                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
+                        </ul>";
+                } else if ($passed) {
+                    echo "<ul class='vertical-menu'>
+                        <li><label class='active' style='background-color: green;'>Viaje Ingresado</label></li>
+                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
+                        </ul>";
                 }
                 ?>
             </div>
