@@ -3,7 +3,7 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/TareaDesarrolloWeb/styles.css">
+        <link rel="stylesheet" href="../../styles.css">
         <title>Ver Viajes</title>
     </head>
     <body onload="generateTable('viajes')">
@@ -117,15 +117,15 @@
                 </div>
                 <br>
                 <div class="button-container">
-                    <button id="return-button" onclick="location.href='/TareaDesarrolloWeb/index.html'" type="button">Volver al menú principal</button>
+                    <button id="return-button" onclick="location.href='../../index.html'" type="button">Volver al menú principal</button>
                 </div>
                 <?php
                     $next = $n + 1;
                     $prev = $n - 1;
-                    $nextLocation = "/TareaDesarrolloWeb/options/ver-viajes.php/?n=$next";
+                    $nextLocation = "../ver-viajes.php/?n=$next";
                     $nextLocation = "location.href='$nextLocation'";
 
-                    $prevLocation = "/TareaDesarrolloWeb/options/ver-viajes.php/?n=$prev";
+                    $prevLocation = "../ver-viajes.php/?n=$prev";
                     $prevLocation = "location.href='$prevLocation'";
                     echo "<div class='button-container'>";
                     if ($prev > 0) {
@@ -142,6 +142,6 @@
             </div>
         </div>
 
-        <script src="/TareaDesarrolloWeb/scripts.js"></script>
+        <script src="../../scripts.js"></script>
     </body>
 </html>

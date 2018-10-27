@@ -3,7 +3,7 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/TareaDesarrolloWeb/styles.css">
+        <link rel="stylesheet" href="../../styles.css">
 
         <title>Más Información Encargos</title>
     </head>
@@ -112,7 +112,7 @@
                         <br>
 
                         <div class='button-container'>
-                            <button id='return-button' onclick='location.href='/TareaDesarrolloWeb/index.html'' type='button'>Volver al menú principal</button>
+                            <button id='return-button' onclick='location.href='../../index.html'' type='button'>Volver al menú principal</button>
                             <button id='back-button' onclick='goBack()' type='button'>Volver atrás</button>
                         </div>";
                     ?>
@@ -121,7 +121,7 @@
         
         </div>
         
-        <script src="/TareaDesarrolloWeb/scripts.js"></script>
+        <script src="../../scripts.js"></script>
         <script> updateWidth(); </script>
         
     </body>

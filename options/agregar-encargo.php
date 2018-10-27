@@ -64,7 +64,7 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/TareaDesarrolloWeb/styles.css">
+        <link rel="stylesheet" href="../styles.css">
         <title>Agregar Encargo</title>
     </head>
     <body onload="onloadFunction()">
@@ -80,7 +80,7 @@
                 if (!$passed) {
                     echo "<ul class='vertical-menu'>
                         <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
-                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
+                        <li><a href='../index.html'>Volver al menú principal.</a></li>
                         </ul>";
                 }
                 if (!$posted) {
@@ -148,6 +148,6 @@
             </div>
         </div>
 
-        <script src="/TareaDesarrolloWeb/scripts.js"></script>
+        <script src="../scripts.js"></script>
     </body>
 </html>

@@ -473,6 +473,8 @@ function updateDescripcion() {
     descH.innerHTML = "Descripción Encargo (" + i + " caracteres restantes):";
 }
 
+
+// SOLO USAR EN AGREGAR VIAJES Y AGREGAR ENCARGOs
 function index() {
-    location.href = '/TareaDesarrolloWeb/index.html';
+    location.href = '../index.html';
 }

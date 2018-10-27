@@ -53,7 +53,7 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/TareaDesarrolloWeb/styles.css">
+        <link rel="stylesheet" href="../styles.css">
 
         <title>Agregar Viaje</title>
     </head>
@@ -126,12 +126,12 @@
                 } else if (!$passed) {
                     echo "<ul class='vertical-menu'>
                         <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
-                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
+                        <li><a href='../index.html'>Volver al menú principal.</a></li>
                         </ul>";
                 } else if ($passed) {
                     echo "<ul class='vertical-menu'>
                         <li><label class='active' style='background-color: green;'>Viaje Ingresado</label></li>
-                        <li><a href='/TareaDesarrolloWeb/index.html'>Volver al menú principal.</a></li>
+                        <li><a href='../index.html'>Volver al menú principal.</a></li>
                         </ul>";
                 }
                 ?>
@@ -139,7 +139,7 @@
         
         </div>
         
-        <script src="/TareaDesarrolloWeb/scripts.js"></script>
+        <script src="../scripts.js"></script>
         
         
     </body>
