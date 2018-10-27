@@ -1,9 +1,10 @@
 <?php
-    $passed = true;
-    $posted = false;
+    $postrequested = false;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $posted = true;
+
+        $passed = true;
+        $postrequested = true;
 
         require "funciones.php";
         
@@ -11,52 +12,63 @@
             $passed = false;
             // echo "Arreglar content type";
         }
-        $db = new mysqli('localhost', 'root', '', 'tarea2') or die("Hubo un problema en la conexión");
+        $db = new mysqli('localhost', 'root', '', 'tarea2');
+
+        if (!$db) {
+            $passed = false;
+        } else {
         
-        $descripcion = $_POST['descripcion'];
-        $espacioSol = $_POST['espacio-solicitado'];
-        $kilosSol = $_POST['kilos-solicitados'];
-        $origen = $_POST['comuna-origen'];
-        $destino = $_POST['comuna-destino'];
-        $foto = $_FILES['foto-encargo']['tmp_name'];
-        $mail = $_POST['email'];
-        $celular = $_POST['celular'];
+            $descripcion = htmlspecialchars($_POST['descripcion']);
+            $espacioSol = htmlspecialchars($_POST['espacio-solicitado']);
+            $kilosSol = htmlspecialchars($_POST['kilos-solicitados']);
+            $origen = htmlspecialchars($_POST['comuna-origen']);
+            $destino = htmlspecialchars($_POST['comuna-destino']);
+            $foto = $_FILES['foto-encargo']['tmp_name'];
+            $mail = htmlspecialchars($_POST['email']);
+            $celular = htmlspecialchars($_POST['celular']);
 
 
-        if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM encargo"))) {
-            $passed = false;
-            // die("No se pudo recuperar id");
-        } else {
-            $fid = $id[0] + 1;
-        }
-
-        // VALIDACION
-
-        if(false) {
-            // header("Location: ../index.html");
-            $passed = false;
-            // die("Validación de datos incorrecta");
-        } else {
-            // Guardar foto
-            $fotoDir = '../fotos/'.$fid.'.jpg';
-            if (!move_uploaded_file($foto, $fotoDir)) {
-                // header...
-                //move_uploaded_file(basename($foto), $fotoDir);
+            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM encargo"))) {
                 $passed = false;
-                // die('Error al subir foto');
+                // die("No se pudo recuperar id");
+            } else {
+                $fid = $id[0] + 1;
             }
 
-            // CAMBIAR FECHA VIAJE POR FECHA IDA Y VUELTA
-            if(!$db->query("INSERT INTO encargo (id, descripcion, origen, destino, espacio, kilos, foto, email_encargador, celular_encargador) VALUES ($fid, '$descripcion','$origen', '$destino', '$espacioSol', '$kilosSol', '$fotoDir', '$mail', '$celular');")) {
-                // echo mysqli_error($db);
+            // VALIDACION
+
+            if(false) {
                 // header("Location: ../index.html");
                 $passed = false;
-                // die("No se pudieron ingresar los datos, intente nuevamente.");
+                // die("Validación de datos incorrecta");
+            } else {
+                // Guardar foto
+                $fotoDir = '../fotos/'.$fid.'.jpg';
+                if (!move_uploaded_file($foto, $fotoDir)) {
+                    // header...
+                    //move_uploaded_file(basename($foto), $fotoDir);
+                    $passed = false;
+                    // die('Error al subir foto');
+                }
+
+                $stmt = $db->prepare("INSERT INTO encargo (id, descripcion, origen, destino, espacio, kilos, foto, email_encargador, celular_encargador) VALUES (?,?,?,?,?,?,?,?,?);");
+                if ($stmt) {
+                    $bp = $stmt->bind_param("isiiiisss", $fid, $descripcion, $origen, $destino, $espacioSol, $kilosSol, $fotoDir, $mail, $celular);
+                    if ($bp) {
+                        $ex = $stmt->execute();
+                    }
+                }
+                // CAMBIAR FECHA VIAJE POR FECHA IDA Y VUELTA
+                if(!$stmt || !$bp || !$ex) {
+                    // echo mysqli_error($db);
+                    $passed = false;
+                    // die("No se pudieron ingresar los datos, intente nuevamente.");
+                }
             }
+
+
+            $db->close();
         }
-
-
-        $db->close();
     }
 ?>
 
@@ -77,13 +89,7 @@
 
             <div class="second-half">
                 <?php
-                if (!$passed) {
-                    echo "<ul class='vertical-menu'>
-                        <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
-                        <li><a href='../index.html'>Volver al menú principal.</a></li>
-                        </ul>";
-                }
-                if (!$posted) {
+                if (!$postrequested) {
                     echo "<form enctype='multipart/form-data' action='' method='post'>
                         <div id='main-div' class='vertical-form'>
                             <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
@@ -143,7 +149,18 @@
                     </div>
                     <br>
                     <br>";
+                } else if (!$passed) {
+                    echo "<ul class='vertical-menu'>
+                        <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
+                        <li><a href='../index.html'>Volver al menú principal.</a></li>
+                        </ul>";
+                } else if ($passed) {
+                    echo "<ul class='vertical-menu'>
+                        <li><label class='active' style='background-color: green;'>Encargo Ingresado</label></li>
+                        <li><a href='../index.html'>Volver al menú principal.</a></li>
+                        </ul>";
                 }
+                
                 ?>
             </div>
         </div>
