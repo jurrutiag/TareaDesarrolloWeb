@@ -35,14 +35,14 @@
     }
 
     function validarSelect($id, $isValid) {
-        if(!$_POST[$id]) {
+        if(!htmlspecialchars($_POST[$id])){
             $isValid = FALSE;
         }
         return $isValid;
     }
 
     function validarEmail($isValid) {
-        $mail = $_POST["email"];
+        $mail = htmlspecialchars($_POST["email"]);
 
         if (!preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD', $mail)) {
             $isValid = FALSE;
@@ -51,7 +51,7 @@
     }
 
     function validarCelular($isValid) {
-        $celular = $_POST["celular"];
+        $celular = htmlspecialchars($_POST["celular"]);
         if (!preg_match('/^\+56\d{1}\d{8}/', $celular)) {
             $isValid = FALSE;
         }
@@ -59,7 +59,7 @@
     }
 
     function validarDescripcion($isValid) {
-        $descripcion = $_POST["descripcion"];
+        $descripcion = htmlspecialchars($_POST["descripcion"]);
         $maxCaracteres = 250;
         if (strlen($descripcion) > $maxCaracteres) {
             $isValid = FALSE;
@@ -68,11 +68,12 @@
     }
 
     function validarFoto($isValid) {
-        $foto = $_FILES['foto-encargo'];
+        $foto = $_FILES['foto-encargo']['name'];
         $extensiones = array("jpg", "jpeg", "exif", "tiff", "bmp", "png", "ppm", "hdr", "bpg");
-
+        
         $splFoto = explode('.', $foto);
-        if (strlen($foto) <= 0 or !in_array(strtolower($splFoto[strlen($splFoto) - 1]), $extensiones)) {
+        
+        if (strlen($foto) <= 0 or !in_array(strtolower($splFoto[sizeof($splFoto) - 1]), $extensiones)) {
             $isValid = FALSE;
         }
         return $isValid;
@@ -82,7 +83,7 @@
         $isValid = TRUE;
 
         $ids = array("region-origen", "comuna-origen", "region-destino", "comuna-destino");
-        $fechaVal = $_POST["fecha-viaje"];
+        $fechaVal = htmlspecialchars($_POST["fecha-viaje"]);
         // validación regiones y comunas
         for ($i = 0; $i < 4; $i++) {
             $isValid = validarSelect($ids[$i], $isValid);
@@ -110,6 +111,43 @@
         // validación celular
 
         $isValid = validarCelular($isValid);
+        
+        return $isValid;
+    }
+
+    function agregar_encargo_validacion() {
+        $isValid = TRUE;
+
+        $ids = array("region-origen", "comuna-origen", "region-destino", "comuna-destino");
+
+        // validacion descripcion
+        $isValid = validarDescripcion("descripcion", $isValid);
+
+
+        // validación regiones y comunas
+        for ($i = 0; $i < 4; $i++) {
+            $isValid = validarSelect($ids[$i], $isValid);
+        }
+
+        // validación espacio
+
+        $isValid = validarSelect("espacio-solicitado", $isValid);
+
+        // validación kilos
+
+        $isValid = validarSelect("kilos-solicitados", $isValid);
+
+        // validación email
+
+        $isValid = validarEmail($isValid);
+
+        // validación celular
+
+        $isValid = validarCelular($isValid);
+
+        // validacion foto
+
+        $isValid = validarFoto($isValid);
         
         return $isValid;
     }

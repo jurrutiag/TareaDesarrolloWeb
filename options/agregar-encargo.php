@@ -37,7 +37,7 @@
 
             // VALIDACION
 
-            if(false) {
+            if(!agregar_encargo_validacion()) {
                 // header("Location: ../index.html");
                 $passed = false;
                 // die("Validación de datos incorrecta");
