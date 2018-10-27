@@ -51,8 +51,15 @@
 
                             $maxN = ceil($numRows[0] / 5);
 
-                            if ($n > $maxN or $n <= 0) {
-                                die("Página incorrecta");
+                            // Si alguien ingresa un n mayor se recarga la pagina con el mayor n posible
+
+                            if ($n > $maxN) {
+                                header("Location: ../ver-viajes.php/?n=$maxN");
+                                die();
+                            }
+                            if ($n <= 0) {
+                                header("Location: ../ver-viajes.php/?n=1");
+                                die();
                             }
 
                             // Se seleccionan los elementos

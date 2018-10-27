@@ -130,7 +130,7 @@
                     </form>
                     <br>
                     <div class='button-container'>
-                        <button id='return-button' onclick='index()' type='button'>Volver al menú principal</button>
+                        <button id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
                     </div>
                     <br>
                     <br>";

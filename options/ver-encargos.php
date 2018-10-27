@@ -51,8 +51,13 @@
 
                             $maxN = ceil($numRows[0] / 5);
 
-                            if ($n > $maxN or $n <= 0) {
-                                die("Página incorrecta");
+                            if ($n > $maxN) {
+                                header("Location: ../ver-encargos.php/?n=$maxN");
+                                die();
+                            }
+                            if ($n <= 0) {
+                                header("Location: ../ver-encargos.php/?n=1");
+                                die();
                             }
 
                             // Se seleccionan los elementos

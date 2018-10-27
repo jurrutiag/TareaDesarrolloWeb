@@ -108,7 +108,7 @@
                     </div>
                     <br>
                     <div class='button-container'>
-                        <button id='return-button' onclick='location.href='../../index.html'' type='button'>Volver al menú principal</button>
+                        <button id='return-button' onclick='index(2)' type='button'>Volver al menú principal</button>
                         <button id='back-button' onclick='goBack()' type='button'>Volver atrás</button>
                     </div>";   
 

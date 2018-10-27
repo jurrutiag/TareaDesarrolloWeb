@@ -474,7 +474,10 @@ function updateDescripcion() {
 }
 
 
-// SOLO USAR EN AGREGAR VIAJES Y AGREGAR ENCARGOs
-function index() {
-    location.href = '../index.html';
+function index(n) {
+    if (n == 1) {
+        location.href = '../index.html';
+    } else if (n == 2) {
+        location.href = '../../index.html';
+    }
 }
