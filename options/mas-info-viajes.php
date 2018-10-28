@@ -18,7 +18,7 @@
             <div class="second-half">
                 
                 <?php
-
+                    require "configuraciones.php";
                     // Verificar definicion de n
 
                     if (!isset($_GET['id'])) {
@@ -29,7 +29,7 @@
 
                     $id = htmlspecialchars($_GET['id']);
 
-                    $db = new mysqli('localhost', 'root', '', 'tarea2') or die("Hubo un problema en la conexión, intente más tarde");
+                    $db = new mysqli($server_name, $user_name, $user_pass, $db_name) or die("Hubo un problema en la conexión, intente más tarde");
 
                     // Obtencion del maximo N
 

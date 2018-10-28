@@ -2,6 +2,7 @@
     $firstTime = true;
 
     require "datos_comunas.php";
+    require "configuraciones.php";
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         
@@ -26,7 +27,9 @@
             $passed = false;
             // echo "Arreglar content type";
         }
-        $db = new mysqli('localhost', 'root', '', 'tarea2');
+        
+        $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
+
         if ($db->connect_error) {
             $passed = false;
             $mensajeError = "Error en la conexión al servidor";

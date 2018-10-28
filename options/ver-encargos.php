@@ -26,7 +26,7 @@
                             <th>Email</th>
                         </tr>
                         <?php
-
+                            require "configuraciones.php";
                             // Verificar definicion de n
 
                             if (!isset($_GET['n'])) {
@@ -40,7 +40,7 @@
 
                             // Se inicia la conexion
 
-                            $db = new mysqli('localhost', 'root', '', 'tarea2') or die("Hubo un problema en la conexión, intente más tarde");
+                            $db = new mysqli($server_name, $user_name, $user_pass, $db_name) or die("Hubo un problema en la conexión, intente más tarde");
 
                             // Obtencion del maximo N
 
