@@ -9,6 +9,15 @@
         $firstTime = false;
 
         require "funciones.php";
+
+        $descripcion = htmlspecialchars($_POST['descripcion']);
+        $espacioSol = htmlspecialchars($_POST['espacio-solicitado']);
+        $kilosSol = htmlspecialchars($_POST['kilos-solicitados']);
+        $origen = htmlspecialchars($_POST['comuna-origen']);
+        $destino = htmlspecialchars($_POST['comuna-destino']);
+        $foto = $_FILES['foto-encargo']['tmp_name'];
+        $mail = htmlspecialchars($_POST['email']);
+        $celular = htmlspecialchars($_POST['celular']);
         
         if(empty($_SERVER['CONTENT_TYPE'])) {
             $passed = false;
@@ -16,22 +25,16 @@
         }
         $db = new mysqli('localhost', 'root', '', 'tarea2');
 
-        if (!$db) {
+        if ($db->connect_error) {
+            
             $passed = false;
-        } else {
-        
-            $descripcion = htmlspecialchars($_POST['descripcion']);
-            $espacioSol = htmlspecialchars($_POST['espacio-solicitado']);
-            $kilosSol = htmlspecialchars($_POST['kilos-solicitados']);
-            $origen = htmlspecialchars($_POST['comuna-origen']);
-            $destino = htmlspecialchars($_POST['comuna-destino']);
-            $foto = $_FILES['foto-encargo']['tmp_name'];
-            $mail = htmlspecialchars($_POST['email']);
-            $celular = htmlspecialchars($_POST['celular']);
+            $mensajeError = "Error en la conexión al servidor";
 
+        } else {
 
             if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM encargo"))) {
                 $passed = false;
+                $mensajeError = "Error en la solicitud al servidor";
                 // die("No se pudo recuperar id");
             } else {
                 $fid = $id[0] + 1;
@@ -42,6 +45,7 @@
             if(!agregar_encargo_validacion()) {
                 // header("Location: ../index.html");
                 $passed = false;
+                $mensajeError = "Error en la validación de los datos";
                 // die("Validación de datos incorrecta");
             } else {
                 // Guardar foto
@@ -50,6 +54,7 @@
                     // header...
                     //move_uploaded_file(basename($foto), $fotoDir);
                     $passed = false;
+                    $mensajeError = "Error en la subida del archivo";
                     // die('Error al subir foto');
                 }
 
@@ -64,6 +69,7 @@
                 if(!$stmt || !$bp || !$ex) {
                     // echo mysqli_error($db);
                     $passed = false;
+                    $mensajeError = "Error en la solicitud al servidor";
                     // die("No se pudieron ingresar los datos, intente nuevamente.");
                 }
             }
@@ -230,7 +236,7 @@
                     }
 
                     echo "<ul class='vertical-menu'>
-                        <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente más tarde</label></li>
+                        <li><label class='active' style='background-color: red;'>$mensajeError, intente más tarde</label></li>
                         </ul>";
 
                     echo "<form enctype='multipart/form-data' action='' method='post'>

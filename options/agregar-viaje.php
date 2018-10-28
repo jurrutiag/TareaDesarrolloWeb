@@ -10,29 +10,32 @@
 
         require "funciones.php";
 
+
+        $unFormattedGoDate = htmlspecialchars($_POST['fecha-viaje']);
+        $origen = htmlspecialchars($_POST['comuna-origen']);
+        $destino = htmlspecialchars($_POST['comuna-destino']);
+        $kilosDisp = htmlspecialchars($_POST['kilos-disponibles']);
+        $espacioDisp = htmlspecialchars($_POST['espacio-disponible']);
+        $mail = htmlspecialchars($_POST['email']);
+        $celular = htmlspecialchars($_POST['celular']);
+
+        $fechaIda = reformatDate($unFormattedGoDate);
+        $fechaRegreso = reformatDate($unFormattedGoDate);
+
         if(empty($_SERVER['CONTENT_TYPE'])) {
             $passed = false;
             // echo "Arreglar content type";
         }
         $db = new mysqli('localhost', 'root', '', 'tarea2');
-        if (!$db) {
+        if ($db->connect_error) {
             $passed = false;
+            $mensajeError = "Error en la conexión al servidor";
         } else {
-            $unFormattedGoDate = htmlspecialchars($_POST['fecha-viaje']);
-            $origen = htmlspecialchars($_POST['comuna-origen']);
-            $destino = htmlspecialchars($_POST['comuna-destino']);
-            $kilosDisp = htmlspecialchars($_POST['kilos-disponibles']);
-            $espacioDisp = htmlspecialchars($_POST['espacio-disponible']);
-            $mail = htmlspecialchars($_POST['email']);
-            $celular = htmlspecialchars($_POST['celular']);
-
-            $fechaIda = reformatDate($unFormattedGoDate);
-            $fechaRegreso = reformatDate($unFormattedGoDate);
-            
 
             if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM viaje"))) {
                 $passed = false;
                 // die("No se pudo recuperar id");
+                $mensajeError = "Error en la solicitud al servidor";
             } else {
                 $fid = $id[0] + 1;
             }
@@ -41,9 +44,10 @@
 
             if(!agregar_viaje_validacion()) {
                 $passed = false;
+                $mensajeError = "Error en la validación de los datos";
                 // die("Validación de datos incorrecta");
             } else {
-                $stmt = $db->prepare("INSERT INTO viajes (id, fecha_ida, fecha_regreso, origen, destino, kilos_disponible, espacio_disponible, email_viajero, celular_viajero) VALUES (?,?,?,?,?,?,?,?,?);");
+                $stmt = $db->prepare("INSERT INTO viaje (id, fecha_ida, fecha_regreso, origen, destino, kilos_disponible, espacio_disponible, email_viajero, celular_viajero) VALUES (?,?,?,?,?,?,?,?,?);");
                 if ($stmt) {
                     $bp = $stmt->bind_param("issiiiiss",  $fid ,  $fechaIda , $fechaRegreso , $origen , $destino , $kilosDisp , $espacioDisp , $mail , $celular );
                     if ($bp) {
@@ -54,6 +58,7 @@
                 if(!$stmt || !$bp || !$ex) {
                     // echo mysqli_error($db);
                     $passed = false;
+                    $mensajeError = "Error en la solicitud al servidor";
                     // die("No se pudieron ingresar los datos, intente nuevamente.");
                 }
             }
@@ -222,7 +227,7 @@
                         }
 
                         echo "<ul class='vertical-menu'>
-                            <li><label class='active' style='background-color: red;'>Hubo un error en la solicitud, intente nuevamente.</label></li>
+                            <li><label class='active' style='background-color: red;'>$mensajeError, intente nuevamente.</label></li>
                             </ul>";
 
                         echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
