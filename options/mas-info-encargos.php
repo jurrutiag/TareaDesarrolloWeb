@@ -30,7 +30,7 @@
                         $id = htmlspecialchars($_GET['id']);
 
                         $db = new mysqli($server_name, $user_name, $user_pass, $db_name) or die("Hubo un problema en la conexión, intente más tarde");
-
+                        
                         // Obtencion del maximo N
 
                         if (!$ids = $db->query("SELECT id FROM encargo")) {

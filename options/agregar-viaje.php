@@ -34,11 +34,12 @@
             $passed = false;
             $mensajeError = "Error en la conexión al servidor";
         } else {
-
-            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM viaje"))) {
+            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM viaje")) || !$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM viaje"))) {
                 $passed = false;
                 // die("No se pudo recuperar id");
                 $mensajeError = "Error en la solicitud al servidor";
+            } else if ($numRows[0] == 0) {
+                $fid = 1;
             } else {
                 $fid = $id[0] + 1;
             }
@@ -253,7 +254,7 @@
                                 $com_destino
                                 </select>
                                 <h3 id='fecha-viaje-h'>Fecha Viaje:</h3>
-                                <input name='fecha-viaje' id='fecha-viaje' size='10' placeholder='DD/MM/AAAA' value=$unFormattedGoDate>
+                                <input name='fecha-viaje' id='fecha-viaje' size='10' placeholder='DD/MM/AAAA' value='$unFormattedGoDate'>
                                 
                                 <h3 id='espacio-disponible-h'>Espacio Disponible:</h3>
                                 <select name='espacio-disponible' id='espacio-disponible'>
@@ -271,10 +272,10 @@
                                     <option value='6' $k6>2 kg</option>
                                 </select>
                                 <h3 id='email-h'>Email:</h3>
-                                <input name='email' id='email' placeholder='Ej: juan@gmail.com' value=$mail>
+                                <input name='email' id='email' placeholder='Ej: juan@gmail.com' value='$mail'>
                                 
                                 <h3 id='celular-h'>Número celular:</h3>
-                                <input name='celular' id='celular' placeholder='+569XXXXXXXX' value=$celular>
+                                <input name='celular' id='celular' placeholder='+569XXXXXXXX' value='$celular'>
                                 <br>
                                 <input type='submit' value='Ingresar Viaje' onclick='return agregar_viaje_validacion()'>
                 

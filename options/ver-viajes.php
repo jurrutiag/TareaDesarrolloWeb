@@ -43,6 +43,7 @@
 
                             $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
                             
+
                             if ($db->connect_error) {
                                 $passed = false;
                                 $mensajeError = "Error en la conexión al servidor";
@@ -60,7 +61,7 @@
 
                                 // Si alguien ingresa un n mayor se recarga la pagina con el mayor n posible
 
-                                if ($n > $maxN) {
+                                if ($n > $maxN && $maxN >= 1) {
                                     header("Location: ../ver-viajes.php/?n=$maxN");
                                     die();
                                 }
@@ -85,7 +86,7 @@
                                 $mensajeError = "Error en la solicitud al servidor";
                             }
                             if ($passed) {
-                                $i = 0;
+                                $i = 1;
                                 $tabla = "";
                                 while ($row = mysqli_fetch_assoc($result)){
 
@@ -99,8 +100,8 @@
                                     $regionidDest = $destinoArr["region_id"];
                                     $destino = $destinoArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidDest"))["nombre"];
 
-                                    $fechaIda = $row["fecha_ida"];
-                                    $fechaIda = (explode(" " ,explode("-", $fechaIda)[2]))[0].'/'.explode("-", $fechaIda)[1].'/'.explode("-", $fechaIda)[0];
+                                    
+                                    $fechaIda = date('d-m-Y', strtotime($row["fecha_ida"]));
 
                                     $espacioDisp = $row['espacio_disponible'];
                                     $espacioDisp = mysqli_fetch_array($db->query("SELECT valor FROM espacio_encargo WHERE id = $espacioDisp"))[0];

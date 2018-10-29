@@ -47,7 +47,7 @@
                                 $passed = false;
                                 $mensajeError = "Error en la conexión al servidor";
                             }
-
+                            
                             // Obtencion del maximo N
 
                             if (!$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM encargo"))) {
@@ -57,7 +57,7 @@
                             } else {
                                 $maxN = ceil($numRows[0] / 5);
 
-                                if ($n > $maxN) {
+                                if ($n > $maxN && $maxN >= 1) {
                                     header("Location: ../ver-encargos.php/?n=$maxN");
                                     die();
                                 }

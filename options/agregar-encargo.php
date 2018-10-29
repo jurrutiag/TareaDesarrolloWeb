@@ -32,11 +32,12 @@
             $mensajeError = "Error en la conexión al servidor";
 
         } else {
-
-            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM encargo"))) {
+            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM encargo")) || !$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM encargo"))) {
                 $passed = false;
-                $mensajeError = "Error en la solicitud al servidor";
                 // die("No se pudo recuperar id");
+                $mensajeError = "Error en la solicitud al servidor";
+            } else if ($numRows[0] == 0) {
+                $fid = 1;
             } else {
                 $fid = $id[0] + 1;
             }
@@ -243,7 +244,7 @@
                     echo "<form enctype='multipart/form-data' action='' method='post'>
                     <div id='main-div' class='vertical-form'>
                         <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
-                        <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)' value=$descripcion>
+                        <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)' value='$descripcion'>
         
                         <h3 id='espacio-solicitado-h'>Espacio:</h3>
                         <select name='espacio-solicitado' id='espacio-solicitado'>
@@ -284,10 +285,10 @@
                         <input type='file' name='foto-encargo' id='foto-encargo'>
         
                         <h3 id='email-h'>Email Encargador:</h3>
-                        <input name='email' id='email' placeholder='Ej: juan@gmail.com' value=$mail>
+                        <input name='email' id='email' placeholder='Ej: juan@gmail.com' value='$mail'>
         
                         <h3 id='celular-h'>Número de Celular de Encargador:</h3>
-                        <input name='celular' id='celular' placeholder='+569XXXXXXXX' value=$celular>
+                        <input name='celular' id='celular' placeholder='+569XXXXXXXX' value='$celular'>
                         <br>
                         <input type='submit' value='Grabar Encargo' onclick='return agregar_encargo_validacion()'>
                         
