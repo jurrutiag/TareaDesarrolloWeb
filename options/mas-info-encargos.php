@@ -32,7 +32,8 @@
                         $id = htmlspecialchars($_GET['id']);
 
                         $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-                        if(!$db->set_charset($encoding)) {
+                        $enc = $db->set_charset($encoding);
+                        if(!$enc) {
                             if ($passed) {
                                 $passed = false;
                                 // die("No se pudo recuperar id");
@@ -84,7 +85,7 @@
 
                         $data = mysqli_fetch_assoc($result);
 
-                        $descripcion = utf8_encode(htmlspecialchars($data['descripcion']));
+                        $descripcion = htmlspecialchars($data['descripcion']);
                         
                         $origen = $data["origen"];
                         $origenQuery = $db->query("SELECT nombre, region_id FROM comuna WHERE id = $origen");
@@ -116,16 +117,16 @@
                             }
                         }
 
-                        $destino = htmlspecialchars(utf8_encode($data['destino']));
-                        $espacio = htmlspecialchars(utf8_encode($espacio));
-                        $kilos = htmlspecialchars(utf8_encode($kilos));
-                        $foto = '../'.htmlspecialchars(utf8_encode($data['foto']));
-                        $email = htmlspecialchars(utf8_encode($data['email_encargador']));
-                        $celular = htmlspecialchars(utf8_encode($data['celular_encargador']));
-                        $comunaOrigen = htmlspecialchars(utf8_encode($comunaOrigen));
-                        $regionOrigen = htmlspecialchars(utf8_encode($regionOrigen));
-                        $comunaDestino = htmlspecialchars(utf8_encode($comunaDestino));
-                        $regionDestino = htmlspecialchars(utf8_encode($regionDestino));
+                        $destino = htmlspecialchars($data['destino']);
+                        $espacio = htmlspecialchars($espacio);
+                        $kilos = htmlspecialchars($kilos);
+                        $foto = '../'.htmlspecialchars($data['foto']);
+                        $email = htmlspecialchars($data['email_encargador']);
+                        $celular = htmlspecialchars($data['celular_encargador']);
+                        $comunaOrigen = htmlspecialchars($comunaOrigen);
+                        $regionOrigen = htmlspecialchars($regionOrigen);
+                        $comunaDestino = htmlspecialchars($comunaDestino);
+                        $regionDestino = htmlspecialchars($regionDestino);
 
                         if ($passed) {
                             echo "<div id='main-div' class='vertical-form'>

@@ -42,7 +42,8 @@
                             // Se inicia la conexion
 
                             $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-                            if(!$db->set_charset($encoding)) {
+                            $enc = $db->set_charset($encoding);
+                            if(!$enc) {
                                 if ($passed) {
                                     $passed = false;
                                     // die("No se pudo recuperar id");
@@ -124,12 +125,12 @@
 
                                     $mail = $row['email_viajero'];
 
-                                    $origen = utf8_encode($origen);
-                                    $destino = utf8_encode($destino);
-                                    $fechaIda = utf8_encode($fechaIda);
-                                    $espacioDisp = utf8_encode($espacioDisp);
-                                    $kilosDisp = utf8_encode($kilosDisp);
-                                    $mail = utf8_encode($mail);
+                                    //$origen = utf8_encode($origen);
+                                    //$destino = utf8_encode($destino);
+                                    //$fechaIda = utf8_encode($fechaIda);
+                                    //$espacioDisp = utf8_encode($espacioDisp);
+                                    //$kilosDisp = utf8_encode($kilosDisp);
+                                    //$mail = utf8_encode($mail);
                                     
                                     if ($origenArr && $destinoArr && $espacioDisp && $kilosDisp) {
                                         $tabla = $tabla."<tr id='$id' onclick='masInfoViajes($id)'>

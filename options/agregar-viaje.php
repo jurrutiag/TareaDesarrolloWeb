@@ -31,7 +31,8 @@
         
         $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
 
-        if(!$db->set_charset($encoding)) {
+        $enc = $db->set_charset($encoding);
+        if(!$enc) {
             if ($passed) {
                 $passed = false;
                 // die("No se pudo recuperar id");
@@ -47,17 +48,24 @@
             }
             
         } else {
-            if (!$id = mysqli_fetch_array($db->query("SELECT MAX(id) FROM viaje")) || !$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM viaje"))) {
+
+            $count_query = $db->query("SELECT COUNT(*) FROM viaje");
+            $id_query = $db->query("SELECT MAX(id) FROM viaje");
+            
+            if (!$count_query || !$id_query) {
                 if ($passed) {
                     $passed = false;
                     // die("No se pudo recuperar id");
                     $mensajeError = "Error en la solicitud al servidor";
                 }
-                
-            } else if ($numRows[0] == 0) {
-                $fid = 1;
             } else {
-                $fid = $id[0] + 1;
+                $id = mysqli_fetch_array($id_query);
+                $numRows = mysqli_fetch_array($count_query);
+                if ($numRows[0] == 0) {
+                    $fid = 1;
+                } else {
+                    $fid = $id[0] + 1;
+                }
             }
 
             // VALIDACION

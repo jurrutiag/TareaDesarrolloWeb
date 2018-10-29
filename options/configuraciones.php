@@ -4,7 +4,7 @@
     $user_pass = '';
     $db_name = 'tarea2';
 
-    $encoding = "latin1";
+    $encoding = "utf8";
 
     //$user_name = 'cc500218_u';
     //$user_pass = 'arutrumn';
