@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="../../styles.css">
         <title>Ver Viajes</title>
     </head>
-    <body onload="generateTable('viajes')">
+    <body>
 
         <div class="container">
 
@@ -28,8 +28,9 @@
                         <?php
                             require "configuraciones.php";
                             // Verificar definicion de n
-
+                            $passed = true;
                             if (!isset($_GET['n'])) {
+                                header("Location: ../ver-viajes.php/?n=1");
                                 die("Parámetro no definido");
                             }
 
@@ -40,26 +41,33 @@
 
                             // Se inicia la conexion
 
-                            $db = new mysqli($server_name, $user_name, $user_pass, $db_name) or die("Hubo un problema en la conexión, intente más tarde");
+                            $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
+                            
+                            if ($db->connect_error) {
+                                $passed = false;
+                                $mensajeError = "Error en la conexión al servidor";
+                            }
 
                             // Obtencion del maximo N
 
                             if (!$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM viaje"))) {
                                 // header("Location: ../index.html");
-                                die("Error en la conexión");
-                            }
+                                $passed = false;
+                                $mensajeError = "Error en la solicitud al servidor";
+                            } else {
 
-                            $maxN = ceil($numRows[0] / 5);
+                                $maxN = ceil($numRows[0] / 5);
 
-                            // Si alguien ingresa un n mayor se recarga la pagina con el mayor n posible
+                                // Si alguien ingresa un n mayor se recarga la pagina con el mayor n posible
 
-                            if ($n > $maxN) {
-                                header("Location: ../ver-viajes.php/?n=$maxN");
-                                die();
-                            }
-                            if ($n <= 0) {
-                                header("Location: ../ver-viajes.php/?n=1");
-                                die();
+                                if ($n > $maxN) {
+                                    header("Location: ../ver-viajes.php/?n=$maxN");
+                                    die();
+                                }
+                                if ($n <= 0) {
+                                    header("Location: ../ver-viajes.php/?n=1");
+                                    die();
+                                }
                             }
 
                             // Se seleccionan los elementos
@@ -73,49 +81,63 @@
                             
                             if(!$result) {
                                 // echo mysqli_error($db);
-                                die("No se pudieron recuperar los datos, intente nuevamente.");
+                                $passed = false;
+                                $mensajeError = "Error en la solicitud al servidor";
                             }
+                            if ($passed) {
+                                $i = 0;
+                                $tabla = "";
+                                while ($row = mysqli_fetch_assoc($result)){
 
-                            $i = 0;
-                            while ($row = mysqli_fetch_assoc($result)){
+                                    $origen = $row["origen"];
+                                    $origenArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $origen"));
+                                    $regionidOr = $origenArr["region_id"];
+                                    $origen = $origenArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidOr"))["nombre"];
+                                    
+                                    $destino = $row["destino"];
+                                    $destinoArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $destino"));
+                                    $regionidDest = $destinoArr["region_id"];
+                                    $destino = $destinoArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidDest"))["nombre"];
 
-                                $origen = $row["origen"];
-                                $origenArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $origen"));
-                                $regionidOr = $origenArr["region_id"];
-                                $origen = $origenArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidOr"))["nombre"];
-                                
-                                $destino = $row["destino"];
-                                $destinoArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $destino"));
-                                $regionidDest = $destinoArr["region_id"];
-                                $destino = $destinoArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidDest"))["nombre"];
+                                    $fechaIda = $row["fecha_ida"];
+                                    $fechaIda = (explode(" " ,explode("-", $fechaIda)[2]))[0].'/'.explode("-", $fechaIda)[1].'/'.explode("-", $fechaIda)[0];
 
-                                $fechaIda = $row["fecha_ida"];
-                                $fechaIda = (explode(" " ,explode("-", $fechaIda)[2]))[0].'/'.explode("-", $fechaIda)[1].'/'.explode("-", $fechaIda)[0];
+                                    $espacioDisp = $row['espacio_disponible'];
+                                    $espacioDisp = mysqli_fetch_array($db->query("SELECT valor FROM espacio_encargo WHERE id = $espacioDisp"))[0];
+                                    
+                                    $kilosDisp = $row['kilos_disponible'];
+                                    $kilosDisp = mysqli_fetch_array($db->query("SELECT valor FROM kilos_encargo WHERE id = $kilosDisp"))[0];
 
-                                $espacioDisp = $row['espacio_disponible'];
-                                $espacioDisp = mysqli_fetch_array($db->query("SELECT valor FROM espacio_encargo WHERE id = $espacioDisp"))[0];
-                                
-                                $kilosDisp = $row['kilos_disponible'];
-                                $kilosDisp = mysqli_fetch_array($db->query("SELECT valor FROM kilos_encargo WHERE id = $kilosDisp"))[0];
+                                    $mail = $row['email_viajero'];
 
-                                $mail = $row['email_viajero'];
-
-                                $origen = utf8_encode($origen);
-                                $destino = utf8_encode($destino);
-                                $fechaIda = utf8_encode($fechaIda);
-                                $espacioDisp = utf8_encode($espacioDisp);
-                                $kilosDisp = utf8_encode($kilosDisp);
-                                $mail = utf8_encode($mail);
-                                
-                                echo "<tr id='$i' onclick='masInfoViajes($i)'>
-                                    <td> $origen </td>
-                                    <td> $destino </td>
-                                    <td> $fechaIda </td>
-                                    <td> $espacioDisp </td>
-                                    <td> $kilosDisp </td>
-                                    <td> $mail </td>
-                                </tr>";
-                                $i += 1;
+                                    $origen = utf8_encode($origen);
+                                    $destino = utf8_encode($destino);
+                                    $fechaIda = utf8_encode($fechaIda);
+                                    $espacioDisp = utf8_encode($espacioDisp);
+                                    $kilosDisp = utf8_encode($kilosDisp);
+                                    $mail = utf8_encode($mail);
+                                    
+                                    if ($origenArr && $destinoArr && $espacioDisp && $kilosDisp) {
+                                        $tabla = $tabla."<tr id='$i' onclick='masInfoViajes($i)'>
+                                            <td> $origen </td>
+                                            <td> $destino </td>
+                                            <td> $fechaIda </td>
+                                            <td> $espacioDisp </td>
+                                            <td> $kilosDisp </td>
+                                            <td> $mail </td>
+                                        </tr>";
+                                    } else {
+                                        $passed = false;
+                                        $mensajeError = "Error en la solicitud al servidor";
+                                    }
+                                    $i += 1;
+                                }
+                            
+                                echo $tabla;
+                            } else {
+                                echo "<ul class='vertical-menu'>
+                                <li><label class='active' style='background-color: red;'>$mensajeError, intente nuevamente.</label></li>
+                                </ul>";
                             }
 
                         ?>
@@ -127,21 +149,23 @@
                     <button id="return-button" onclick="location.href='../../index.html'" type="button">Volver al menú principal</button>
                 </div>
                 <?php
-                    $next = $n + 1;
-                    $prev = $n - 1;
-                    $nextLocation = "../ver-viajes.php/?n=$next";
-                    $nextLocation = "location.href='$nextLocation'";
+                    if ($passed) {
+                        $next = $n + 1;
+                        $prev = $n - 1;
+                        $nextLocation = "../ver-viajes.php/?n=$next";
+                        $nextLocation = "location.href='$nextLocation'";
 
-                    $prevLocation = "../ver-viajes.php/?n=$prev";
-                    $prevLocation = "location.href='$prevLocation'";
-                    echo "<div class='button-container'>";
-                    if ($prev > 0) {
-                        echo "<button id='next-button' onclick=$prevLocation type='button'>Anterior</button>";
+                        $prevLocation = "../ver-viajes.php/?n=$prev";
+                        $prevLocation = "location.href='$prevLocation'";
+                        echo "<div class='button-container'>";
+                        if ($prev > 0) {
+                            echo "<button id='next-button' onclick=$prevLocation type='button'>Anterior</button>";
+                        }
+                        if ($next <= $maxN) {
+                            echo "<button id='next-button' onclick=$nextLocation type='button'>Siguiente</button>";
+                        }
+                        echo "</div>";
                     }
-                    if ($next <= $maxN) {
-                        echo "<button id='next-button' onclick=$nextLocation type='button'>Siguiente</button>";
-                    }
-                    echo "</div>";
                 ?>
                 <br>
                 <br>
