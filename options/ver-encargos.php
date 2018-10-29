@@ -42,18 +42,27 @@
                             // Se inicia la conexion
 
                             $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-                            
+                            if(!$db->set_charset($encoding)) {
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en el encoding";
+                                }
+                            }
                             if ($db->connect_error) {
                                 $passed = false;
                                 $mensajeError = "Error en la conexión al servidor";
                             }
-                            
+
                             // Obtencion del maximo N
 
                             if (!$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM encargo"))) {
                                 // header("Location: ../index.html");
-                                $passed = false;
-                                $mensajeError = "Error en la solicitud al servidor";
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en la solicitud al servidor";
+                                }
                             } else {
                                 $maxN = ceil($numRows[0] / 5);
 
@@ -79,12 +88,14 @@
 
                             if(!$result) {
                                 // echo mysqli_error($db);
-                                $passed = false;
-                                $mensajeError = "Error en la solicitud al servidor";
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en la solicitud al servidor";
+                                }
                             }
 
                             if ($passed) {
-                                $i = 0;
                                 $tabla = "";
                                 while ($row = mysqli_fetch_assoc($result)){
     
@@ -121,17 +132,19 @@
                                         $tabla = $tabla."<tr id='$id' onclick='masInfoEncargos($id)'>
                                             <td> $origen </td>
                                             <td> $destino </td>
-                                            <td> <img alt='Foto encargo $i' src='$foto' class='foto-tabla'/> </td>
+                                            <td> <img alt='Foto encargo $id' src='$foto' class='foto-tabla'/> </td>
                                             <td> $espacioDisp </td>
                                             <td> $kilosDisp </td>
                                             <td> $mail </td>
                                         </tr>";
                                         
                                     } else {
-                                        $passed = false;
-                                        $mensajeError = "Error en la solicitud al servidor";
+                                        if ($passed) {
+                                            $passed = false;
+                                            // die("No se pudo recuperar id");
+                                            $mensajeError = "Error en la solicitud al servidor";
+                                        }
                                     }
-                                    $i += 1;
                                 };
 
                                 echo $tabla;

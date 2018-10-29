@@ -42,7 +42,13 @@
                             // Se inicia la conexion
 
                             $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-                            
+                            if(!$db->set_charset($encoding)) {
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en el encoding";
+                                }
+                            }
 
                             if ($db->connect_error) {
                                 $passed = false;
@@ -53,8 +59,11 @@
 
                             if (!$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM viaje"))) {
                                 // header("Location: ../index.html");
-                                $passed = false;
-                                $mensajeError = "Error en la solicitud al servidor";
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en la solicitud al servidor";
+                                }
                             } else {
 
                                 $maxN = ceil($numRows[0] / 5);
@@ -82,13 +91,17 @@
                             
                             if(!$result) {
                                 // echo mysqli_error($db);
-                                $passed = false;
-                                $mensajeError = "Error en la solicitud al servidor";
+                                if ($passed) {
+                                    $passed = false;
+                                    // die("No se pudo recuperar id");
+                                    $mensajeError = "Error en la solicitud al servidor";
+                                }
                             }
                             if ($passed) {
-                                $i = 1;
                                 $tabla = "";
                                 while ($row = mysqli_fetch_assoc($result)){
+
+                                    $id = $row['id'];
 
                                     $origen = $row["origen"];
                                     $origenArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $origen"));
@@ -119,7 +132,7 @@
                                     $mail = utf8_encode($mail);
                                     
                                     if ($origenArr && $destinoArr && $espacioDisp && $kilosDisp) {
-                                        $tabla = $tabla."<tr id='$i' onclick='masInfoViajes($i)'>
+                                        $tabla = $tabla."<tr id='$id' onclick='masInfoViajes($id)'>
                                             <td> $origen </td>
                                             <td> $destino </td>
                                             <td> $fechaIda </td>
@@ -128,10 +141,12 @@
                                             <td> $mail </td>
                                         </tr>";
                                     } else {
-                                        $passed = false;
-                                        $mensajeError = "Error en la solicitud al servidor";
+                                        if ($passed) {
+                                            $passed = false;
+                                            // die("No se pudo recuperar id");
+                                            $mensajeError = "Error en la solicitud al servidor";
+                                        }
                                     }
-                                    $i += 1;
                                 }
                             
                                 echo $tabla;
