@@ -75,7 +75,9 @@
                 // die("Validación de datos incorrecta");
             } else {
                 // Guardar foto
-                $fotoDir = '../fotos/'.$fid.'.jpg';
+                $nombreGuardado = date("Y-m-d-H-i-s");
+                $extension = pathinfo($_FILES['foto-encargo']['name'], PATHINFO_EXTENSION);
+                $fotoDir = '../fotos/'.$nombreGuardado.'.'.$extension;
                 if (!move_uploaded_file($foto, $fotoDir)) {
                     // header...
                     //move_uploaded_file(basename($foto), $fotoDir);
