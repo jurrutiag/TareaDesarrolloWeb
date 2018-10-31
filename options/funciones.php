@@ -100,6 +100,9 @@
             $isValid = validarSelect($ids[$i], $isValid);
         }
 
+        if (htmlspecialchars($_POST["comuna-origen"]) === htmlspecialchars($_POST["comuna-destino"])) {
+            $isValid = FALSE;
+        }
 
         // validación fecha
 
