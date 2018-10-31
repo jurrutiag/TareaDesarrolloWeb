@@ -7,6 +7,14 @@
 
     function validarFecha($dat) {
 
+        $today = new DateTime('NOW');
+        $datetime = new DateTime(reformatDate($dat));
+        
+        if ($today > $datetime) {
+            
+            return FALSE;
+        }
+
         if (!preg_match('/^(\d{2}\/\d{2}\/\d{4})/', $dat)) {
             return FALSE;
         }
@@ -83,7 +91,10 @@
         $isValid = TRUE;
 
         $ids = array("region-origen", "comuna-origen", "region-destino", "comuna-destino");
-        $fechaVal = htmlspecialchars($_POST["fecha-viaje"]);
+        $fechaIdaVal = htmlspecialchars($_POST["fecha-ida"]);
+
+        $fechaRegresoVal = htmlspecialchars($_POST["fecha-regreso"]);
+
         // validación regiones y comunas
         for ($i = 0; $i < 4; $i++) {
             $isValid = validarSelect($ids[$i], $isValid);
@@ -92,10 +103,17 @@
 
         // validación fecha
 
-        if (!validarFecha($fechaVal)) {
+        if (!validarFecha($fechaIdaVal)) {
             $isValid = FALSE;
         }
 
+        if ($fechaRegresoVal !== '') {
+            $ida = new DateTime(reformatDate($fechaIdaVal));
+            $regreso = new DateTime(reformatDate($fechaRegresoVal));
+            if ((!is_null($fechaRegresoVal) && !validarFecha($fechaRegresoVal)) || $ida > $regreso) {
+                $isValid = FALSE;
+            }
+        }
         // validación espacio
 
         $isValid = validarSelect("espacio-disponible", $isValid);
@@ -111,6 +129,7 @@
         // validación celular
 
         $isValid = validarCelular($isValid);
+
         
         return $isValid;
     }

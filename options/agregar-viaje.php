@@ -11,8 +11,8 @@
 
         require "funciones.php";
 
-
-        $unFormattedGoDate = htmlspecialchars($_POST['fecha-viaje']);
+        $unFormattedGoDate = htmlspecialchars($_POST['fecha-ida']);
+        $unFormattedReturnDate = htmlspecialchars($_POST['fecha-regreso']);
         $origen = htmlspecialchars($_POST['comuna-origen']);
         $destino = htmlspecialchars($_POST['comuna-destino']);
         $kilosDisp = htmlspecialchars($_POST['kilos-disponibles']);
@@ -20,8 +20,6 @@
         $mail = htmlspecialchars($_POST['email']);
         $celular = htmlspecialchars($_POST['celular']);
 
-        $fechaIda = reformatDate($unFormattedGoDate);
-        $fechaRegreso = reformatDate($unFormattedGoDate);
 
         if(empty($_SERVER['CONTENT_TYPE'])) {
             $passed = false;
@@ -67,7 +65,6 @@
                     $fid = $id[0] + 1;
                 }
             }
-
             // VALIDACION
 
             if(!agregar_viaje_validacion()) {
@@ -79,6 +76,15 @@
                 
                 // die("Validación de datos incorrecta");
             } else {
+        
+                $fechaIda = reformatDate($unFormattedGoDate);
+                if ($unFormattedReturnDate === '' || is_null($unFormattedReturnDate)) {
+                    $fechaRegreso = '0-0-0';
+                } else {
+                    // Fecha por defecto que significa viaje indefinido
+                    $fechaRegreso = reformatDate($unFormattedReturnDate);
+                }
+
                 $stmt = $db->prepare("INSERT INTO viaje (id, fecha_ida, fecha_regreso, origen, destino, kilos_disponible, espacio_disponible, email_viajero, celular_viajero) VALUES (?,?,?,?,?,?,?,?,?);");
                 if ($stmt) {
                     $bp = $stmt->bind_param("issiiiiss",  $fid ,  $fechaIda , $fechaRegreso , $origen , $destino , $kilosDisp , $espacioDisp , $mail , $celular );
@@ -145,7 +151,7 @@
                             $com_destino = $com_destino."<option value = $com_destino_val> $com_destino_name </option>";
 
                         }
-                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' action='agregar-viaje.php' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
@@ -164,8 +170,11 @@
                                 <select name='comuna-destino' id='comuna-destino'>
                                 $com_destino
                                 </select>
-                                <h3 id='fecha-viaje-h'>Fecha Viaje:</h3>
-                                <input name='fecha-viaje' id='fecha-viaje' size='10' placeholder='DD/MM/AAAA'>
+                                <h3 id='fecha-ida-h'>Fecha Ida:</h3>
+                                <input name='fecha-ida' id='fecha-ida' size='10' placeholder='DD/MM/AAAA'>
+
+                                <h3 id='fecha-regreso-h'>Fecha Regreso:</h3>
+                                <input name='fecha-regreso' id='fecha-regreso' size='10' placeholder='DD/MM/AAAA'>
                                 
                                 <h3 id='espacio-disponible-h'>Espacio Disponible:</h3>
                                 <select name='espacio-disponible' id='espacio-disponible'>
@@ -266,7 +275,7 @@
                             <li><label class='active' style='background-color: red;'>$mensajeError, intente nuevamente.</label></li>
                             </ul>";
 
-                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' action='agregar-viaje.php' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
@@ -285,8 +294,11 @@
                                 <select name='comuna-destino' id='comuna-destino'>
                                 $com_destino
                                 </select>
-                                <h3 id='fecha-viaje-h'>Fecha Viaje:</h3>
-                                <input name='fecha-viaje' id='fecha-viaje' size='10' placeholder='DD/MM/AAAA' value='$unFormattedGoDate'>
+                                <h3 id='fecha-ida-h'>Fecha Ida:</h3>
+                                <input name='fecha-ida' id='fecha-ida' size='10' placeholder='DD/MM/AAAA' value=$unFormattedGoDate>
+
+                                <h3 id='fecha-regreso-h'>Fecha Regreso:</h3>
+                                <input name='fecha-regreso' id='fecha-regreso' size='10' placeholder='DD/MM/AAAA' value=$unFormattedReturnDate>
                                 
                                 <h3 id='espacio-disponible-h'>Espacio Disponible:</h3>
                                 <select name='espacio-disponible' id='espacio-disponible'>

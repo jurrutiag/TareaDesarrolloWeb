@@ -261,19 +261,34 @@ function agregar_viaje_validacion() {
 
     // validación fecha
 
-    var fechaVal = document.getElementById("fecha-viaje").value;
+    var fechaIdaVal = document.getElementById("fecha-ida").value;
 
-    if (!validarFecha(fechaVal)) {
-        idValid = false;
-        var hFecha = document.getElementById("fecha-viaje-h").innerHTML;
+    if (!validarFecha(fechaIdaVal)) {
+        isValid = false;
+        var hFecha = document.getElementById("fecha-ida-h").innerHTML;
         if (!hFecha.includes(" (Ingrese fecha válida)")) {
             console.log('a')
-            document.getElementById("fecha-viaje-h").innerHTML += " (Ingrese fecha válida)";
-            document.getElementById("fecha-viaje-h").style.color = "red";
+            document.getElementById("fecha-ida-h").innerHTML += " (Ingrese fecha válida)";
+            document.getElementById("fecha-ida-h").style.color = "red";
         }
     } else {
-        document.getElementById("fecha-viaje-h").innerHTML = document.getElementById("fecha-viaje-h").innerHTML.split('(')[0];
-        document.getElementById("fecha-viaje-h").style.color = "white";
+        document.getElementById("fecha-ida-h").innerHTML = document.getElementById("fecha-ida-h").innerHTML.split('(')[0];
+        document.getElementById("fecha-ida-h").style.color = "white";
+    }
+
+    var fechaRegresoVal = document.getElementById("fecha-regreso").value;
+
+    if (fechaRegresoVal != 0 && !validarFecha(fechaRegresoVal)) {
+        isValid = false;
+        var hFecha = document.getElementById("fecha-regreso-h").innerHTML;
+        if (!hFecha.includes(" (Ingrese fecha válida)")) {
+            console.log('a')
+            document.getElementById("fecha-regreso-h").innerHTML += " (Ingrese fecha válida)";
+            document.getElementById("fecha-regreso-h").style.color = "red";
+        }
+    } else {
+        document.getElementById("fecha-regreso-h").innerHTML = document.getElementById("fecha-regreso-h").innerHTML.split('(')[0];
+        document.getElementById("fecha-regreso-h").style.color = "white";
     }
 
     // validación espacio
