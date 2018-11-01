@@ -29,14 +29,6 @@
         
         $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
 
-        $enc = $db->set_charset($encoding);
-        if(!$enc) {
-            if ($passed) {
-                $passed = false;
-                // die("No se pudo recuperar id");
-                $mensajeError = "Error en el encoding";
-            }
-        }
 
         if ($db->connect_error) {
             if ($passed) {
@@ -46,11 +38,22 @@
             }
             
         } else {
+            $enc = $db->set_charset($encoding);
+            if(!$enc) {
+                if ($passed) {
+                    $passed = false;
+                    // die("No se pudo recuperar id");
+                    $mensajeError = "Error en el encoding";
+                }
+            }
 
             $count_query = $db->query("SELECT COUNT(*) FROM viaje");
             $id_query = $db->query("SELECT MAX(id) FROM viaje");
-            
-            if (!$count_query || !$id_query) {
+            if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
+                
+                $fid = 1;
+
+            } else if (!$count_query || !$id_query) {
                 if ($passed) {
                     $passed = false;
                     // die("No se pudo recuperar id");
@@ -151,7 +154,7 @@
                             $com_destino = $com_destino."<option value = $com_destino_val> $com_destino_name </option>";
 
                         }
-                        echo "<form id='main-form' action='agregar-viaje.php' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
@@ -211,7 +214,6 @@
                     } else if (!$passed) {
                         // creacion de selects
                         //onload="onloadFunction()"
-
                         $reg_origen = "";
                         $reg_destino = "";
                         $com_origen = "";
@@ -275,7 +277,7 @@
                             <li><label class='active' style='background-color: red;'>$mensajeError, intente nuevamente.</label></li>
                             </ul>";
 
-                        echo "<form id='main-form' action='agregar-viaje.php' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>

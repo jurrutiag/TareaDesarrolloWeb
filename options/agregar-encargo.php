@@ -25,14 +25,7 @@
             // echo "Arreglar content type";
         }
         $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-        $enc = $db->set_charset($encoding);
-        if(!$enc) {
-            if ($passed) {
-                $passed = false;
-                // die("No se pudo recuperar id");
-                $mensajeError = "Error en el encoding";
-            }
-        }
+        
         if ($db->connect_error) {
 
             if ($passed) {
@@ -42,10 +35,22 @@
             }
 
         } else {
+            $enc = $db->set_charset($encoding);
+            if(!$enc) {
+                if ($passed) {
+                    $passed = false;
+                    // die("No se pudo recuperar id");
+                    $mensajeError = "Error en el encoding";
+                }
+            }
+
             $count_query = $db->query("SELECT COUNT(*) FROM encargo");
             $id_query = $db->query("SELECT MAX(id) FROM encargo");
-
-            if (!$count_query || !$id_query) {
+            if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
+                
+                $fid = 1;
+                
+            } else if (!$count_query || !$id_query) {
                 if ($passed) {
                     $passed = false;
                     // die("No se pudo recuperar id");

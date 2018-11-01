@@ -6,12 +6,12 @@
     }
 
     function validarFecha($dat) {
-
+        
         $today = new DateTime('NOW');
         $datetime = new DateTime(reformatDate($dat));
         
         if ($today > $datetime) {
-            
+
             return FALSE;
         }
 
