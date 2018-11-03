@@ -80,7 +80,9 @@
                 // die("Validación de datos incorrecta");
             } else {
                 // Guardar foto
-                $nombreGuardado = date("Y-m-d-H-i-s");
+                $nombreGuardado = DateTime::createFromFormat('U.u', microtime(TRUE)); 
+                $nombreGuardado = $nombreGuardado->format('Y-m-d-H-i-s-u');
+                //$nombreGuardado = date("Y-m-d-H-i-s-u");
                 $extension = pathinfo($_FILES['foto-encargo']['name'], PATHINFO_EXTENSION);
                 $fotoDir = '../fotos/'.$nombreGuardado.'.'.$extension;
                 if (!move_uploaded_file($foto, $fotoDir)) {
@@ -159,7 +161,7 @@
                         $com_destino = $com_destino."<option value = $com_destino_val> $com_destino_name </option>";
 
                     }
-                    echo "<form enctype='multipart/form-data' action='' method='post'>
+                    echo "<form enctype='multipart/form-data' method='post'>
                         <div id='main-div' class='vertical-form'>
                             <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
                             <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)'>
@@ -280,7 +282,7 @@
                         <li><label class='active' style='background-color: red;'>$mensajeError, intente más tarde</label></li>
                         </ul>";
 
-                    echo "<form enctype='multipart/form-data' action='' method='post'>
+                    echo "<form enctype='multipart/form-data' method='post'>
                     <div id='main-div' class='vertical-form'>
                         <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
                         <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)' value='$descripcion'>

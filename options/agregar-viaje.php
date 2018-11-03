@@ -79,7 +79,7 @@
                 
                 // die("Validación de datos incorrecta");
             } else {
-        
+
                 $fechaIda = reformatDate($unFormattedGoDate);
                 if ($unFormattedReturnDate === '' || is_null($unFormattedReturnDate)) {
                     $fechaRegreso = '0-0-0';
@@ -154,7 +154,7 @@
                             $com_destino = $com_destino."<option value = $com_destino_val> $com_destino_name </option>";
 
                         }
-                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
@@ -277,7 +277,7 @@
                             <li><label class='active' style='background-color: red;'>$mensajeError, intente nuevamente.</label></li>
                             </ul>";
 
-                        echo "<form id='main-form' action='' method='post' enctype='multipart/form-data'>
+                        echo "<form id='main-form' method='post' enctype='multipart/form-data'>
                             <div id='main-div' class='vertical-form'>
                                 <h3 id='region-origen-h'>Región Origen:</h3>
                                 <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>

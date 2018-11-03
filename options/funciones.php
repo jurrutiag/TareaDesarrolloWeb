@@ -63,7 +63,7 @@
 
     function validarCelular($isValid) {
         $celular = htmlspecialchars($_POST["celular"]);
-        if (strlen($celular) > 15) {
+        if (strlen($celular) > 12) {
             $isValid = FALSE;
         }
         if (!preg_match('/^\+56\d{1}\d{8}/', $celular)) {
@@ -137,7 +137,7 @@
         $isValid = validarEmail($isValid);
 
         // validación celular
-
+        
         $isValid = validarCelular($isValid);
 
         
