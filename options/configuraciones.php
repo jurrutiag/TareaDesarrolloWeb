@@ -6,6 +6,8 @@
 
     $encoding = "utf8";
 
+    // Configuracion para objetos DateTime
+
     date_default_timezone_set('Chile/Continental');
 
     //$user_name = 'cc500218_u';
