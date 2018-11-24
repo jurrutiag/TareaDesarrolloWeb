@@ -124,6 +124,7 @@
                 $isValid = FALSE;
             }
         }
+        
         // validación espacio
 
         $isValid = validarSelect("espacio-disponible", $isValid);
@@ -182,5 +183,11 @@
         $isValid = validarFoto($isValid);
         
         return $isValid;
+    }
+
+    function mensaje_error($mensajeError, $returnPath) {
+        echo "<div class='list-group col-md-6 col-12 m-auto'>
+            <li class='list-group-item active bg-warning'>$mensajeError</li>
+            </div>";
     }
 ?>

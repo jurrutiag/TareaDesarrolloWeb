@@ -174,8 +174,9 @@ function generateTable(type) {
 */
 
 
-function masInfoViajes(n) {
-    location.href = "../mas-info-viajes.php/?id=" + n;
+function masInfoViajes(n, loc='mas-info-viajes.php?id=') {
+    location.href = loc + n.toString();
+
 }
 
 function loadMasInfoViajes() {
@@ -191,8 +192,8 @@ function loadMasInfoViajes() {
     }
 }
 
-function masInfoEncargos(n) {
-    location.href = "../mas-info-encargos.php/?id=" + n;
+function masInfoEncargos(n, loc="mas-info-encargos.php?id=") {
+    location.href = loc + n.toString();
 }
 
 function changeSize() {
@@ -273,9 +274,9 @@ function agregar_viaje_validacion() {
         }
     } else {
         document.getElementById("fecha-ida-h").innerHTML = document.getElementById("fecha-ida-h").innerHTML.split('(')[0];
-        document.getElementById("fecha-ida-h").style.color = "white";
+        document.getElementById("fecha-ida-h").style.color = "black";
     }
-
+    /*
     var fechaRegresoVal = document.getElementById("fecha-regreso").value;
 
     if (fechaRegresoVal != 0 && !validarFecha(fechaRegresoVal)) {
@@ -288,8 +289,9 @@ function agregar_viaje_validacion() {
         }
     } else {
         document.getElementById("fecha-regreso-h").innerHTML = document.getElementById("fecha-regreso-h").innerHTML.split('(')[0];
-        document.getElementById("fecha-regreso-h").style.color = "white";
+        document.getElementById("fecha-regreso-h").style.color = "black";
     }
+    */
 
     // validación espacio
 
@@ -400,7 +402,7 @@ function validarSelect(id, isValid) {
         }
     }  else {
         document.getElementById(id + "-h").innerHTML = document.getElementById(id + "-h").innerHTML.split('(')[0];
-        document.getElementById(id + "-h").style.color = "white";
+        document.getElementById(id + "-h").style.color = "black";
     }
     return isValid
 }
@@ -416,7 +418,7 @@ function validarEmail(isValid) {
         }
     }  else {
         document.getElementById("email-h").innerHTML = document.getElementById("email-h").innerHTML.split('(')[0];
-        document.getElementById("email-h").style.color = "white";
+        document.getElementById("email-h").style.color = "black";
     }
     return isValid
 }
@@ -431,7 +433,7 @@ function validarCelular(isValid) {
         }
     }  else {
         document.getElementById("celular-h").innerHTML = document.getElementById("celular-h").innerHTML.split('(')[0];
-        document.getElementById("celular-h").style.color = "white";
+        document.getElementById("celular-h").style.color = "black";
     }
     return isValid
 }
@@ -447,7 +449,7 @@ function validarDescripcion(isValid) {
         }
     }  else {
         document.getElementById("descripcion-h").innerHTML = document.getElementById("descripcion-h").innerHTML.split('(')[0];
-        document.getElementById("descripcion-h").style.color = "white";
+        document.getElementById("descripcion-h").style.color = "black";
     }
     return isValid
 }
@@ -465,7 +467,7 @@ function validarFoto(isValid) {
         }
     }  else {
         document.getElementById("foto-encargo-h").innerHTML = document.getElementById("foto-encargo-h").innerHTML.split('(')[0];
-        document.getElementById("foto-encargo-h").style.color = "white";
+        document.getElementById("foto-encargo-h").style.color = "black";
     }
     return isValid
 }
@@ -489,10 +491,6 @@ function updateDescripcion() {
 }
 
 
-function index(n) {
-    if (n == 1) {
-        location.href = '../index.html';
-    } else if (n == 2) {
-        location.href = '../../index.html';
-    }
+function index() {
+    location.href = "../index.php";
 }

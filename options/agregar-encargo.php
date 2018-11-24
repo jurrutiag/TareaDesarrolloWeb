@@ -127,18 +127,18 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../boostrap v4 w3c fix.css">
         <link rel="stylesheet" href="../styles.css">
         <title>Agregar Encargo</title>
     </head>
-    <body>
+    <body class="bg-light">
 
-        <div class="container">
-
-            <div class="first-half">
-
+        <div class="container-fluid h-100 bg-light">
+            <div class="row bg-light">
+                <div class="jumbotron jumbotron-fluid col-md-12 display-4 d-none d-md-block" id="top-part"></div>
             </div>
 
-            <div class="second-half">
+            <div class="row bg-light">
                 <?php
                 if ($firstTime) {
                     $reg_origen = "";
@@ -161,20 +161,23 @@
                         $com_destino = $com_destino."<option value = $com_destino_val> $com_destino_name </option>";
 
                     }
-                    echo "<form enctype='multipart/form-data' method='post'>
-                        <div id='main-div' class='vertical-form'>
-                            <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
-                            <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)'>
+
+                    
+
+                    echo "<form class='col-12 col-md-6 m-auto' enctype='multipart/form-data' method='post'>
+                        <div class='form-group'>
+                            <h5 class='m-2' id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h5>
+                            <input class='form-control' name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)'>
             
-                            <h3 id='espacio-solicitado-h'>Espacio:</h3>
-                            <select name='espacio-solicitado' id='espacio-solicitado'>
+                            <h5 class='m-2' id='espacio-solicitado-h'>Espacio:</h5>
+                            <select class='form-control' name='espacio-solicitado' id='espacio-solicitado'>
                                 <option value='1'>10x10x10</option>
                                 <option value='2'>20x20x20</option>
                                 <option value='3'>30x30x30</option>
                             </select>
             
-                            <h3 id='kilos-solicitados-h'>Kilos:</h3>
-                            <select name='kilos-solicitados' id='kilos-solicitados'>
+                            <h5 class='m-2' id='kilos-solicitados-h'>Kilos:</h5>
+                            <select class='form-control' name='kilos-solicitados' id='kilos-solicitados'>
                                 <option value='1'>200 gr</option>
                                 <option value='2'>500 gr</option>
                                 <option value='3'>800 gr</option>
@@ -183,43 +186,41 @@
                                 <option value='6'>2 kg</option>
                             </select>
             
-                            <h3 id='region-origen-h'>Región Origen:</h3>
-                            <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
+                            <h5 class='m-2' id='region-origen-h'>Región Origen:</h5>
+                            <select class='form-control' name='region-origen' id='region-origen' onchange='comunaOrigen()'>
                             $reg_origen
                             </select>
-                            <h3 id='comuna-origen-h'>Comuna Origen:</h3>
-                            <select name='comuna-origen' id='comuna-origen'>
+                            <h5 class='m-2' id='comuna-origen-h'>Comuna Origen:</h5>
+                            <select class='form-control' name='comuna-origen' id='comuna-origen'>
                             $com_origen
                             </select>
-                            <h3 id='region-destino-h'>Región Destino:</h3>
-                            <select name='region-destino' id='region-destino' onchange='comunaDestino()'>
+                            <h5 class='m-2' id='region-destino-h'>Región Destino:</h5>
+                            <select class='form-control' name='region-destino' id='region-destino' onchange='comunaDestino()'>
                             $reg_destino
                             </select>
                             
-                            <h3 id='comuna-destino-h'>Comuna Destino:</h3>
-                            <select name='comuna-destino' id='comuna-destino'>
+                            <h5 class='m-2' id='comuna-destino-h'>Comuna Destino:</h5>
+                            <select class='form-control' name='comuna-destino' id='comuna-destino'>
                             $com_destino
                             </select>
             
-                            <h3 id='foto-encargo-h'>Foto Encargo [Se aceptan formatos jpg, jpeg, exif, tiff, bmp, png, ppm, hdr, bpg]:</h3>
-                            <input type='file' name='foto-encargo' id='foto-encargo'>
+                            <h5 class='m-2' id='foto-encargo-h'>Foto Encargo [Se aceptan formatos jpg, jpeg, exif, tiff, bmp, png, ppm, hdr, bpg]:</h5>
+                            <input class='form-control' type='file' name='foto-encargo' id='foto-encargo'>
             
-                            <h3 id='email-h'>Email Encargador:</h3>
-                            <input name='email' id='email' placeholder='Ej: juan@gmail.com'>
+                            <h5 class='m-2' id='email-h'>Email Encargador:</h5>
+                            <input class='form-control' name='email' id='email' placeholder='Ej: juan@gmail.com'>
             
-                            <h3 id='celular-h'>Número de Celular de Encargador:</h3>
-                            <input name='celular' id='celular' placeholder='+569XXXXXXXX'>
+                            <h5 class='m-2' id='celular-h'>Número de Celular de Encargador:</h5>
+                            <input class='form-control' name='celular' id='celular' placeholder='+569XXXXXXXX'>
                             <br>
-                            <input type='submit' value='Grabar Encargo' onclick='return agregar_encargo_validacion()'>
-                            
+                            <input class='form-control btn btn-primary border' type='submit' value='Ingresar Viaje' onclick='return agregar_encargo_validacion()'>
+                            <br>
+                            <br>
+                            <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
+                            <br>
+                            <br>
                         </div>
-                    </form>
-                    <br>
-                    <div class='button-container'>
-                        <button id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
-                    </div>
-                    <br>
-                    <br>";
+                    </form>";
                 } else if (!$passed) {
                     $reg_origen = "";
                     $reg_destino = "";
@@ -278,24 +279,21 @@
                         }
                     }
 
-                    echo "<ul class='vertical-menu'>
-                        <li><label class='active' style='background-color: red;'>$mensajeError, intente más tarde</label></li>
-                        </ul>";
-
-                    echo "<form enctype='multipart/form-data' method='post'>
-                    <div id='main-div' class='vertical-form'>
-                        <h3 id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h3>
-                        <input name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)' value='$descripcion'>
+                    echo "<form class='col-12 col-md-6 m-auto' enctype='multipart/form-data' method='post'>
+                    <div class='form-group'>
+                        <h3 class='form-control bg-danger text-white'>$mensajeError</h3>
+                        <h5 class='m-2' id='descripcion-h'>Descripción Encargo (250 caracteres restantes):</h5>
+                        <input class='form-control' name='descripcion' id='descripcion' oninput='updateDescripcion()' maxlength='250' placeholder='Ej: Caja de regalos (Max 250 caracteres)' value='$descripcion'>
         
-                        <h3 id='espacio-solicitado-h'>Espacio:</h3>
-                        <select name='espacio-solicitado' id='espacio-solicitado'>
+                        <h5 class='m-2' id='espacio-solicitado-h'>Espacio:</h5>
+                        <select class='form-control' name='espacio-solicitado' id='espacio-solicitado'>
                             <option value='1' $esp1>10x10x10</option>
                             <option value='2' $esp2>20x20x20</option>
                             <option value='3' $esp3>30x30x30</option>
                         </select>
         
-                        <h3 id='kilos-solicitados-h'>Kilos:</h3>
-                        <select name='kilos-solicitados' id='kilos-solicitados'>
+                        <h5 class='m-2' id='kilos-solicitados-h'>Kilos:</h5>
+                        <select class='form-control' name='kilos-solicitados' id='kilos-solicitados'>
                             <option value='1' $k1>200 gr</option>
                             <option value='2' $k2>500 gr</option>
                             <option value='3' $k3>800 gr</option>
@@ -304,48 +302,43 @@
                             <option value='6' $k6>2 kg</option>
                         </select>
         
-                        <h3 id='region-origen-h'>Región Origen:</h3>
-                        <select name='region-origen' id='region-origen' onchange='comunaOrigen()'>
+                        <h5 class='m-2' id='region-origen-h'>Región Origen:</h5>
+                        <select class='form-control' name='region-origen' id='region-origen' onchange='comunaOrigen()'>
                         $reg_origen
                         </select>
-                        <h3 id='comuna-origen-h'>Comuna Origen:</h3>
-                        <select name='comuna-origen' id='comuna-origen'>
+                        <h5 class='m-2' id='comuna-origen-h'>Comuna Origen:</h5>
+                        <select class='form-control' name='comuna-origen' id='comuna-origen'>
                         $com_origen
                         </select>
-                        <h3 id='region-destino-h'>Región Destino:</h3>
-                        <select name='region-destino' id='region-destino' onchange='comunaDestino()'>
+                        <h5 class='m-2' id='region-destino-h'>Región Destino:</h5>
+                        <select class='form-control' name='region-destino' id='region-destino' onchange='comunaDestino()'>
                         $reg_destino
                         </select>
                         
-                        <h3 id='comuna-destino-h'>Comuna Destino:</h3>
-                        <select name='comuna-destino' id='comuna-destino'>
+                        <h5 class='m-2' id='comuna-destino-h'>Comuna Destino:</h5>
+                        <select class='form-control' name='comuna-destino' id='comuna-destino'>
                         $com_destino
                         </select>
         
-                        <h3 id='foto-encargo-h'>Foto Encargo [Se aceptan formatos jpg, jpeg, exif, tiff, bmp, png, ppm, hdr, bpg]:</h3>
-                        <input type='file' name='foto-encargo' id='foto-encargo'>
+                        <h5 class='m-2' id='foto-encargo-h'>Foto Encargo [Se aceptan formatos jpg, jpeg, exif, tiff, bmp, png, ppm, hdr, bpg]:</h5>
+                        <input class='form-control' type='file' name='foto-encargo' id='foto-encargo'>
         
-                        <h3 id='email-h'>Email Encargador:</h3>
-                        <input name='email' id='email' placeholder='Ej: juan@gmail.com' value='$mail'>
+                        <h5 class='m-2' id='email-h'>Email Encargador:</h5>
+                        <input class='form-control' name='email' id='email' placeholder='Ej: juan@gmail.com' value='$mail'>
         
-                        <h3 id='celular-h'>Número de Celular de Encargador:</h3>
-                        <input name='celular' id='celular' placeholder='+569XXXXXXXX' value='$celular'>
+                        <h5 class='m-2' id='celular-h'>Número de Celular de Encargador:</h5>
+                        <input class='form-control' name='celular' id='celular' placeholder='+569XXXXXXXX' value='$celular'>
                         <br>
-                        <input type='submit' value='Grabar Encargo' onclick='return agregar_encargo_validacion()'>
-                        
+                        <input class='form-control btn btn-primary border' type='submit' value='Ingresar Viaje' onclick='return agregar_encargo_validacion()'>
+                        <br>
+                        <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
                     </div>
-                    </form>
-                    <br>
-                    <div class='button-container'>
-                        <button id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
-                    </div>
-                    <br>
-                    <br>";
+                    </form>";
                 } else if ($passed) {
-                    echo "<ul class='vertical-menu'>
-                        <li><label class='active' style='background-color: green;'>Encargo Ingresado</label></li>
-                        <li><a href='../index.html'>Volver al menú principal.</a></li>
-                        </ul>";
+                    echo "<div class='list-group col-md-6 col-12 m-auto'>
+                        <li class='list-group-item active bg-success'>Encargo Ingresado</li>
+                        <a class='list-group-item list-group-item-action' href='../index.php'>Volver al menú principal</a>
+                        </div>";                        
                 }
                 
                 ?>
@@ -353,5 +346,7 @@
         </div>
 
         <script src="../scripts.js"></script>
+        <script src="../bootstrap.js"></script>
+
     </body>
 </html>

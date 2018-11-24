@@ -4,7 +4,7 @@
 }
 
 body {
-    font-family: "Arial";
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     height: 100%;
     overflow: auto;
 }
@@ -15,183 +15,8 @@ html{
     overflow: hidden;
 }
 
-ul {
-    list-style-type: none;
-}
-
-.vertical-menu {
-    width: 350px;
-    display: block;
-    margin: auto;
-}
-
-.vertical-menu a, label {
-    background-color: rgb(233, 233, 233);
-    color: black;
-    display: block;
-    padding: 12px;
-    text-decoration: none;
-}
-
-.vertical-menu a:hover {
-    background-color: #ccc;
-}
-
-.vertical-menu label.active {
-    background-color: rgb(82, 146, 199);
-    color: white;
-}
-
-.vertical-form {
-    width: 350px;
-    display: block;
-    margin: 0 auto;
-    background-color: rgb(82, 146, 199);
-}
-
-.vertical-form input{
-    background-color: rgb(240, 240, 240);
-    color: black;
-    padding-top: 7px;
-    text-decoration: none;
-    border-style: solid;
-    border-width: 0.5px;
-    border-color: rgb(148, 148, 148);
-    display: block;
-    border-radius: 5px;
-    width: 100%;
-}
-
-.vertical-form input[type=submit]{
-    background-color: rgb(233, 233, 233);
-    padding: 12px; 
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 5px;
-    width: 50%;
-    margin: 0 auto;
-}
-
-.vertical-form input[type=submit]:focus{
-    outline: none;
-}
-
-.vertical-form label, h3{
-    background-color: rgb(95, 169, 230);
-    color: white;
-    padding: 12px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-decoration: none;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
-}
-
-.vertical-form select, input[type="file"] {
-    background-color: rgb(240, 240, 240);
-    color: black;
-    padding-top: 7px;
-    text-decoration: none;
-    display: block;
-    
-    border-radius: 5px;
-    width: 80%;
-    text-align: left;
-}
-
-.vertical-form select:focus {
-    outline: none;
-}
-
-.vertical-form input:hover, select:hover {
-    background-color: rgb(212, 212, 212);
-}
-
-.vertical-form a:hover {
-    background-color: #ccc;
-}
-
-.vertical-form label.active {
-    background-color: rgb(64, 64, 223);
-    color: white;
-}
-
-th, td {
-    padding: 15px;
-}
-
-
-th {
-    background-color:rgb(95, 169, 230);
-    color: white;
-}
-
-td {
-    text-align: left;
-}
-
-tr:nth-child(odd) {
-    background-color: rgb(173, 218, 255);
-}
-
-tr:nth-child(even) {
-    background-color: white;
-}
-
-table {
-    border-collapse: collapse;
-    margin: auto;
-}
-
-div {
-    margin: 0 auto;
-}
-
-button {
-    background-color: rgb(233, 233, 233);
-    padding: 12px; 
-    border-style: solid;
-    border-width: 1px;
-}
-
-button:hover {
-    background-color: #ccc;
-}
-
-.container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.first-half {
-    background-color: rgb(95, 169, 230);
-    height: 20%;
-    display: block;
-    position: absolute;
-    width: 100%;
-}
-
-.second-half {
-    background-color: rgb(82, 146, 199);
-    top: 20%;
-    display: block;
-    position: absolute;
-    width: 100%;
-    min-height: 80%
-}
-
-.info {
-    background-color: rgb(82, 146, 199) !important;
-    color: #ccc !important;
-    padding: 12px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-decoration: none;
-    font-size: 15px;
-    display: block;
-    margin: 0 auto;
+.jumbotron {
+    margin: 0;
 }
 
 .foto-tabla {
@@ -204,8 +29,3 @@ button:hover {
     height: 240px;
 }
 
-.button-container {
-    text-align: center;
-    display: block;
-    margin: auto;
-}
