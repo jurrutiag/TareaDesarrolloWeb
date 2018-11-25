@@ -1,15 +1,15 @@
 <?php
     $firstTime = true;
 
-    require "datos_comunas.php";
-    require "configuraciones.php";
+    require_once("datos_comunas.php");
+    require_once("configuraciones.php");
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $passed = true;
         $firstTime = false;
 
-        require "funciones.php";
+        require_once("funciones.php");
 
         $descripcion = htmlspecialchars($_POST['descripcion']);
         $espacioSol = htmlspecialchars($_POST['espacio-solicitado']);
@@ -17,7 +17,7 @@
         $origen = htmlspecialchars($_POST['comuna-origen']);
         $destino = htmlspecialchars($_POST['comuna-destino']);
         $foto = $_FILES['foto-encargo']['tmp_name'];
-        $mail = htmlspecialchars($_POST['email']);
+        $mail = strtolower(htmlspecialchars($_POST['email']));
         $celular = htmlspecialchars($_POST['celular']);
         
         if(empty($_SERVER['CONTENT_TYPE'])) {
@@ -213,7 +213,7 @@
                             <h5 class='m-2' id='celular-h'>Número de Celular de Encargador:</h5>
                             <input class='form-control' name='celular' id='celular' placeholder='+569XXXXXXXX'>
                             <br>
-                            <input class='form-control btn btn-primary border' type='submit' value='Ingresar Viaje' onclick='return agregar_encargo_validacion()'>
+                            <input class='form-control btn btn-primary border' type='submit' value='Ingresar Encargo' onclick='return agregar_encargo_validacion()'>
                             <br>
                             <br>
                             <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
@@ -329,7 +329,7 @@
                         <h5 class='m-2' id='celular-h'>Número de Celular de Encargador:</h5>
                         <input class='form-control' name='celular' id='celular' placeholder='+569XXXXXXXX' value='$celular'>
                         <br>
-                        <input class='form-control btn btn-primary border' type='submit' value='Ingresar Viaje' onclick='return agregar_encargo_validacion()'>
+                        <input class='form-control btn btn-primary border' type='submit' value='Ingresar Encargo' onclick='return agregar_encargo_validacion()'>
                         <br>
                         <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
                     </div>

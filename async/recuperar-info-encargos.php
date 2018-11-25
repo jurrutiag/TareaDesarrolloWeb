@@ -118,26 +118,26 @@
 
         if ($passed) {
             return "<div id='main-div' class='list-group col-12 p-0 col-md-7 m-auto'>
-            <h5 class='list-group-item list-group-item-dark'>Descripción:</h3>
-            <h6 id='descripcion' class='list-group-item list-group-item-light'>$descripcion</h4>
-            <h5 class='list-group-item list-group-item-dark'>Espacio solicitado:</h3>
-            <h6 id='espacio-solicitado' class='list-group-item list-group-item-light'>$espacio</h4>
-            <h5 class='list-group-item list-group-item-dark'>Kilos Solicitados:</h3>
-            <h6 id='kilos-solicitados' class='list-group-item list-group-item-light'>$kilos</h4>
-            <h5 class='list-group-item list-group-item-dark'>Región Origen:</h3>
-            <h6 id='region-origen' class='list-group-item list-group-item-light'>$regionOrigen</h4>
-            <h5 class='list-group-item list-group-item-dark'>Comuna Origen:</h3>
-            <h6 id='comuna-origen' class='list-group-item list-group-item-light'>$comunaOrigen</h4>
-            <h5 class='list-group-item list-group-item-dark'>Región Destino:</h3>
-            <h6 id='region-destino' class='list-group-item list-group-item-light'>$regionDestino</h4>
-            <h5 class='list-group-item list-group-item-dark'>Comuna Destino:</h3>
-            <h6 id='comuna-destino' class='list-group-item list-group-item-light'>$comunaDestino</h4>
-            <h5 class='list-group-item list-group-item-dark'>Foto Encargo:</h3>
+            <h5 class='list-group-item list-group-item-dark'>Descripción:</h5>
+            <h6 id='descripcion' class='list-group-item list-group-item-light'>$descripcion</h6>
+            <h5 class='list-group-item list-group-item-dark'>Espacio solicitado:</h5>
+            <h6 id='espacio-solicitado' class='list-group-item list-group-item-light'>$espacio</h6>
+            <h5 class='list-group-item list-group-item-dark'>Kilos Solicitados:</h5>
+            <h6 id='kilos-solicitados' class='list-group-item list-group-item-light'>$kilos</h6>
+            <h5 class='list-group-item list-group-item-dark'>Región Origen:</h5>
+            <h6 id='region-origen' class='list-group-item list-group-item-light'>$regionOrigen</h6>
+            <h5 class='list-group-item list-group-item-dark'>Comuna Origen:</h5>
+            <h6 id='comuna-origen' class='list-group-item list-group-item-light'>$comunaOrigen</h6>
+            <h5 class='list-group-item list-group-item-dark'>Región Destino:</h5>
+            <h6 id='region-destino' class='list-group-item list-group-item-light'>$regionDestino</h6>
+            <h5 class='list-group-item list-group-item-dark'>Comuna Destino:</h5>
+            <h6 id='comuna-destino' class='list-group-item list-group-item-light'>$comunaDestino</h6>
+            <h5 class='list-group-item list-group-item-dark'>Foto Encargo:</h5>
             <img id='foto-encargo' class='list-group-item list-group-item-light foto-info m-auto' src=$foto alt='Foto Encargo' onclick='changeSize()'>
-            <h5 class='list-group-item list-group-item-dark'>Email Encargador:</h3>
-            <h6 id='email-encargador' class='list-group-item list-group-item-light'>$email</h4>
-            <h5 class='list-group-item list-group-item-dark'>Número celular:</h3>
-            <h6 id='celular-encargador' class='list-group-item list-group-item-light'>$celular</h4>
+            <h5 class='list-group-item list-group-item-dark'>Email Encargador:</h5>
+            <h6 id='email-encargador' class='list-group-item list-group-item-light'>$email</h6>
+            <h5 class='list-group-item list-group-item-dark'>Número celular:</h5>
+            <h6 id='celular-encargador' class='list-group-item list-group-item-light'>$celular</h6>
             </div>";
 
             $db->close();

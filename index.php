@@ -8,8 +8,8 @@
         <title>Página Principal</title>
         <style>
         #map {
-            height: 100%;  /* The height is 400 pixels */
-            width: 100%;  /* The width is the width of the web page */
+            height: 100%;
+            width: 100%;
             }
         </style>
     </head>
@@ -32,13 +32,13 @@
                     <a href="options/agregar-encargo.php" class="list-group-item list-group-item-action list-group-item-white border-right-0">Agregar Encargo</a>
                     <a href="options/ver-viajes.php?n=1" class="list-group-item list-group-item-action list-group-item-white border-right-0">Ver Viajes</a>
                     <a href="options/ver-encargos.php?n=1" class="list-group-item list-group-item-action list-group-item-white border-bottom-0 border-right-0">Ver Encargos</a>
-                    
+
                 </div>
                 <div id="map" class="col-12 col-md-10 h-100 w-100"></div>
                 <div id="search-result" class="list-group col-md-10 col-12 p-0 bg-white h-100 w-100 rounded">
-                    
+
                 </div>
-                
+
             </div>
         </div>
 
@@ -46,9 +46,9 @@
         <script src="scripts.js"></script>
         <script src="search.js"></script>
         <script src="bootstrap.js"></script>
-        
+
         <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG195ROSB1lHUnAgFQjLMqBBBE7yq9Tss&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=KEYKEYKEY&callback=initMap">
         </script>
         <script src="map.js"></script>
     </body>

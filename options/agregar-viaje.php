@@ -1,15 +1,15 @@
 <?php
     $firstTime = true;
 
-    require "datos_comunas.php";
-    require "configuraciones.php";
+    require_once("datos_comunas.php");
+    require_once("configuraciones.php");
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         $passed = true;
         $firstTime = false;
 
-        require "funciones.php";
+        require_once("funciones.php");
 
         $unFormattedGoDate = htmlspecialchars($_POST['fecha-ida']);
         $unFormattedReturnDate = htmlspecialchars($_POST['fecha-regreso']);
@@ -319,7 +319,10 @@
                                 <br>
                                 <input class='form-control btn btn-primary border' type='submit' value='Ingresar Viaje' onclick='return agregar_viaje_validacion()'>
                                 <br>
+                                <br>
                                 <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
+                                <br>
+                                <br>
                             </div>
                 
                         </form>";
@@ -336,7 +339,6 @@
         
         <script src="../scripts.js"></script>
         <script src="../bootstrap.js"></script>
-        
         
     </body>
 </html>

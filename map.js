@@ -12,58 +12,6 @@ function initMap() {
                 // The map, centered at cent
                 var map = new google.maps.Map(
                     document.getElementById('map'), {zoom: 4.5, center: cent});
-                /*
-                var paths = [];
-                var markers1 = [];
-                var markers2 = [];
-                var contents = [];
-
-                var infoWindow = new google.maps.InfoWindow();
-                var res;
-                
-                for (var i = 1; i <= result.ammount; i++) {
-                    if (i === 1) res = result.data1;
-                    if (i === 2) res = result.data2;
-                    if (i === 3) res = result.data3;
-
-                    contents.push(res["tag_text"]);
-                    var actualContent;
-                    
-                    paths.push( new google.maps.Polyline({
-                        path: [{'lat': res[0].lat, 'lng': res[0].lng},{'lat': res[1].lat, 'lng': res[1].lng}],
-                        geodesic: true,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    }));
-                    markers1.push( new google.maps.Marker({
-                        position: {'lat': res[0].lat, 'lng': res[0].lng},
-                        map: map,
-                        title: res["title"]
-                    }));
-                    markers2.push( new google.maps.Marker({
-                        position: {'lat': res[1].lat, 'lng': res[1].lng},
-                        map: map,
-                        title: res["title"]
-                    }));
-
-                    if (i == 1) actualContent = contents[0];
-                    if (i == 2) actualContent = contents[1];
-                    if (i == 3) actualContent = contents[2];
-
-                    markers1[i - 1].addListener('click', function() {
-                        infoWindow.setContent(actualContent);
-                        infoWindow.open(map, this);
-                    });
-                    
-                    markers2[i - 1].addListener('click', function() {
-                        infoWindow.setContent(actualContent);
-                        infoWindow.open(map, this);
-                    });
-
-                    paths[i - 1].setMap(map);
-                }
-                */
                 
                 var infoWindow = new google.maps.InfoWindow();
 

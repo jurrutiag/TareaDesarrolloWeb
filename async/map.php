@@ -1,5 +1,7 @@
 <?php
     require_once("../options/configuraciones.php");
+    require_once("../options/funciones.php");
+
     $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
     $enc = $db->set_charset($encoding);
     if(!$enc) {
@@ -39,10 +41,10 @@
             $rawAddOr = $comunaOrigen.", ".$regionOrigen;
             $addressOrigen = str_replace(" ", "+", "{".$rawAddOr."+Chile+"."}");
 
-            $addressOrigen = strtr($addressOrigen, array("á"=>"a", "é"=>"e", "í"=>"i", "ó"=>"o", "ú"=>"u", "ñ"=>"n"));
+            $addressOrigen = remove_special_chars($addressOrigen);
 
-            $urlOrigen = "https://maps.googleapis.com/maps/api/geocode/json?address=$addressOrigen&key=AIzaSyAG195ROSB1lHUnAgFQjLMqBBBE7yq9Tss";
-            
+            $urlOrigen = "https://maps.googleapis.com/maps/api/geocode/json?address=$addressOrigen&key=KEYKEYKEY";
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $urlOrigen);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -52,9 +54,9 @@
             $rawAddDest = $comunaDestino.", ".$regionDestino;
             $addressDestino = str_replace(" ", "+", "{".$rawAddDest."+Chile+"."}");
 
-            $addressDestino = strtr($addressDestino, array("á"=>"a", "é"=>"e", "í"=>"i", "ó"=>"o", "ú"=>"u", "ñ"=>"n"));
+            $addressDestino = remove_special_chars($addressDestino);
 
-            $urlDestino = "https://maps.googleapis.com/maps/api/geocode/json?address=$addressDestino&key=AIzaSyAG195ROSB1lHUnAgFQjLMqBBBE7yq9Tss";
+            $urlDestino = "https://maps.googleapis.com/maps/api/geocode/json?address=$addressDestino&key=KEYKEYKEY";
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $urlDestino);
@@ -67,7 +69,7 @@
 
             $fecha_ida = $row["fecha_ida"];
             $fecha_ida = date('d-m-Y', strtotime($fecha_ida));
-            
+
             $espacio = $row['espacio_disponible'];
             $espacioQuery = $db->query("SELECT valor FROM espacio_encargo WHERE id = $espacio");
             $espacio = mysqli_fetch_array($espacioQuery)[0];
@@ -75,14 +77,14 @@
             $kilos = $row['kilos_disponible'];
             $kilosQuery = $db->query("SELECT valor FROM kilos_encargo WHERE id = $kilos");
             $kilos = mysqli_fetch_array($kilosQuery)[0];
-            
+
             $fecha_regreso = $row["fecha_regreso"];
             $fecha_regreso = date('d-m-Y', strtotime($fecha_regreso));
             if ($fecha_regreso === date('d-m-Y', strtotime('00-00-0000'))) {
                 $fecha_regreso = "No regresa";
             }
             $id = $row["id"];
-            
+
             if (false) {
                 $passed = false;
                 $data["result_status"] = false;

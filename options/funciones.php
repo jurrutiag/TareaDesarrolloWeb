@@ -190,4 +190,9 @@
             <li class='list-group-item active bg-warning'>$mensajeError</li>
             </div>";
     }
+
+    function remove_special_chars($string) {
+        $special_chars_arr = array("á"=>"a", "é"=>"e", "í"=>"i", "ó"=>"o", "ú"=>"u", "ñ"=>"n");
+        return strtr($string, $special_chars_arr);
+    }
 ?>

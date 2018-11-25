@@ -124,26 +124,26 @@
         if ($passed) {
             
             return "<div id='main-div' class='list-group col-12 col-md-6 p-0 m-auto'>
-            <h5 class='list-group-item list-group-item-dark'>Región Origen:</h3>
-            <h6 id='region-origen' class='list-group-item list-group-item-light'>$regionOrigen</h4>
-            <h5 class='list-group-item list-group-item-dark'>Comuna Origen:</h3>
-            <h6 id='comuna-origen' class='list-group-item list-group-item-light'>$comunaOrigen</h4>
-            <h5 class='list-group-item list-group-item-dark'>Región Destino:</h3>
-            <h6 id='region-destino' class='list-group-item list-group-item-light'>$regionDestino</h4>
-            <h5 class='list-group-item list-group-item-dark'>Comuna Destino:</h3>
-            <h6 id='comuna-destino' class='list-group-item list-group-item-light'>$comunaDestino</h4>
-            <h5 class='list-group-item list-group-item-dark'>Fecha Viaje:</h3>
-            <h6 id='fecha-viaje' class='list-group-item list-group-item-light'>$fecha_ida</h4>
-            <h5 class='list-group-item list-group-item-dark'>Fecha Regreso:</h3>
-            <h6 id='fecha-regreso' class='list-group-item list-group-item-light'>$fecha_regreso</h4>
-            <h5 class='list-group-item list-group-item-dark'>Espacio Disponible:</h3>
-            <h6 id='espacio-disponible' class='list-group-item list-group-item-light'>$espacio</h4>
-            <h5 class='list-group-item list-group-item-dark'>Kilos Disponibles:</h3>
-            <h6 id='kilos-disponibles' class='list-group-item list-group-item-light'>$kilos</h4>
-            <h5 class='list-group-item list-group-item-dark'>Email:</h3>
-            <h6 id='email-viajero' class='list-group-item list-group-item-light'>$email</h4>
-            <h5 class='list-group-item list-group-item-dark'>Número celular:</h3>
-            <h6 id='celular-viajero' class='list-group-item list-group-item-light'>$celular</h4>
+            <h5 class='list-group-item list-group-item-dark'>Región Origen:</h5>
+            <h6 id='region-origen' class='list-group-item list-group-item-light'>$regionOrigen</h6>
+            <h5 class='list-group-item list-group-item-dark'>Comuna Origen:</h5>
+            <h6 id='comuna-origen' class='list-group-item list-group-item-light'>$comunaOrigen</h6>
+            <h5 class='list-group-item list-group-item-dark'>Región Destino:</h5>
+            <h6 id='region-destino' class='list-group-item list-group-item-light'>$regionDestino</h6>
+            <h5 class='list-group-item list-group-item-dark'>Comuna Destino:</h5>
+            <h6 id='comuna-destino' class='list-group-item list-group-item-light'>$comunaDestino</h6>
+            <h5 class='list-group-item list-group-item-dark'>Fecha Viaje:</h5>
+            <h6 id='fecha-viaje' class='list-group-item list-group-item-light'>$fecha_ida</h6>
+            <h5 class='list-group-item list-group-item-dark'>Fecha Regreso:</h5>
+            <h6 id='fecha-regreso' class='list-group-item list-group-item-light'>$fecha_regreso</h6>
+            <h5 class='list-group-item list-group-item-dark'>Espacio Disponible:</h5>
+            <h6 id='espacio-disponible' class='list-group-item list-group-item-light'>$espacio</h6>
+            <h5 class='list-group-item list-group-item-dark'>Kilos Disponibles:</h5>
+            <h6 id='kilos-disponibles' class='list-group-item list-group-item-light'>$kilos</h6>
+            <h5 class='list-group-item list-group-item-dark'>Email:</h5>
+            <h6 id='email-viajero' class='list-group-item list-group-item-light'>$email</h6>
+            <h5 class='list-group-item list-group-item-dark'>Número celular:</h5>
+            <h6 id='celular-viajero' class='list-group-item list-group-item-light'>$celular</h6>
             </div>";
             
             $db->close();

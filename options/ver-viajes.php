@@ -18,6 +18,7 @@
                     <?php
                         require_once("configuraciones.php");
                         require_once("funciones.php");
+
                         // Verificar definicion de n
                         $passed = true;
                         if (!isset($_GET['n'])) {
