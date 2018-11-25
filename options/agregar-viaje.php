@@ -19,99 +19,72 @@
         $espacioDisp = htmlspecialchars($_POST['espacio-disponible']);
         $mail = strtolower(htmlspecialchars($_POST['email']));
         $celular = htmlspecialchars($_POST['celular']);
-
-
-        if(empty($_SERVER['CONTENT_TYPE'])) {
-            $passed = false;
-            // echo "Arreglar content type";
-            $mensajeError = "Error en la página";
-        }
         
-        $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
+        $db_config = new DbConfig();
+        $db_arr = $db_config->getConnection();
+        
+        if (!$db_arr["connection"]) {
+            to_error_page($db_arr["message"]);
+            die();
+        } else {
+            $db = $db_arr["db"];
+        }
+
+        $count_query = $db->query("SELECT COUNT(*) FROM viaje");
+        $id_query = $db->query("SELECT MAX(id) FROM viaje");
+        if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
+            
+            $fid = 1;
+
+        } else if (!$count_query || !$id_query) {
+            $mensajeError = "2";
+            to_error_page($mensajeError);
+            die();
+        } else {
+            $id = mysqli_fetch_array($id_query);
+            $numRows = mysqli_fetch_array($count_query);
+            if ($numRows[0] == 0) {
+                $fid = 1;
+            } else {
+                $fid = $id[0] + 1;
+            }
+        }
+        // VALIDACION
+
+        if(!agregar_viaje_validacion()) {
+            $passed = false;
+            $mensajeError = "Error en la validación de los datos";
+            
+            // die("Validación de datos incorrecta");
+        } else {
+
+            $fechaIda = reformatDate($unFormattedGoDate);
+            if ($unFormattedReturnDate === '' || is_null($unFormattedReturnDate)) {
+                $fechaRegreso = '0-0-0';
+            } else {
+                // Fecha por defecto que significa viaje indefinido
+                $fechaRegreso = reformatDate($unFormattedReturnDate);
+            }
 
 
-        if ($db->connect_error) {
-            if ($passed) {
-                $passed = false;
-                // die("No se pudo recuperar id");
-                $mensajeError = "Error en la conexión al servidor";
+            $stmt = $db->prepare("INSERT INTO viaje (id, fecha_ida, fecha_regreso, origen, destino, kilos_disponible, espacio_disponible, email_viajero, celular_viajero) VALUES (?,?,?,?,?,?,?,?,?);");
+            if ($stmt) {
+                $bp = $stmt->bind_param("issiiiiss",  $fid ,  $fechaIda , $fechaRegreso , $origen , $destino , $kilosDisp , $espacioDisp , $mail , $celular);
+                if ($bp) {
+                    $ex = $stmt->execute();
+                }
             }
             
-        } else {
-            $enc = $db->set_charset($encoding);
-            if(!$enc) {
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en el encoding";
-                }
+            if(!$stmt || !$bp || !$ex) {
+                $mensajeError = "2";
+                to_error_page($mensajeError);
+                die();
             }
-
-            $count_query = $db->query("SELECT COUNT(*) FROM viaje");
-            $id_query = $db->query("SELECT MAX(id) FROM viaje");
-            if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
-                
-                $fid = 1;
-
-            } else if (!$count_query || !$id_query) {
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en la solicitud al servidor";
-                }
-            } else {
-                $id = mysqli_fetch_array($id_query);
-                $numRows = mysqli_fetch_array($count_query);
-                if ($numRows[0] == 0) {
-                    $fid = 1;
-                } else {
-                    $fid = $id[0] + 1;
-                }
-            }
-            // VALIDACION
-
-            if(!agregar_viaje_validacion()) {
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en la validación de los datos";
-                }
-                
-                // die("Validación de datos incorrecta");
-            } else {
-
-                $fechaIda = reformatDate($unFormattedGoDate);
-                if ($unFormattedReturnDate === '' || is_null($unFormattedReturnDate)) {
-                    $fechaRegreso = '0-0-0';
-                } else {
-                    // Fecha por defecto que significa viaje indefinido
-                    $fechaRegreso = reformatDate($unFormattedReturnDate);
-                }
-
-
-                $stmt = $db->prepare("INSERT INTO viaje (id, fecha_ida, fecha_regreso, origen, destino, kilos_disponible, espacio_disponible, email_viajero, celular_viajero) VALUES (?,?,?,?,?,?,?,?,?);");
-                if ($stmt) {
-                    $bp = $stmt->bind_param("issiiiiss",  $fid ,  $fechaIda , $fechaRegreso , $origen , $destino , $kilosDisp , $espacioDisp , $mail , $celular);
-                    if ($bp) {
-                        $ex = $stmt->execute();
-                    }
-                }
-                // CAMBIAR FECHA VIAJE POR FECHA IDA Y VUELTA
-                if(!$stmt || !$bp || !$ex) {
-                    // echo mysqli_error($db);
-                    if ($passed) {
-                        $passed = false;
-                        // die("No se pudo recuperar id");
-                        $mensajeError = "Error en la solicitud al servidor";
-                    }
-                    
-                    // die("No se pudieron ingresar los datos, intente nuevamente.");
-                }
-            }
-
-
-            $db->close();
         }
+
+
+        $db->close();
+        
     }
 ?>
 

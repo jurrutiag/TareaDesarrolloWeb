@@ -191,8 +191,32 @@
             </div>";
     }
 
+    function to_error_page($errid, $loc = "error-page.php") {
+        Header("Location: ".$loc."?errid=".$errid);
+    }
+
     function remove_special_chars($string) {
         $special_chars_arr = array("á"=>"a", "é"=>"e", "í"=>"i", "ó"=>"o", "ú"=>"u", "ñ"=>"n");
         return strtr($string, $special_chars_arr);
+    }
+
+    function get_region_comuna($db, $comunaId) {
+        $result_array = array();
+        
+        $comQuery = $db->query("SELECT nombre, region_id FROM comuna WHERE id = $comunaId");
+        $comArr = mysqli_fetch_assoc($comQuery);
+        $nombreComuna = $comArr["nombre"];
+
+        $regionid = $comArr["region_id"];
+        $nombreQuery = $db->query("SELECT nombre FROM region WHERE id = $regionid");
+        $nombreRegion = mysqli_fetch_assoc($nombreQuery)["nombre"];
+
+        $is_success = $comQuery && $nombreQuery;
+
+        $result_array["comuna"] = $nombreComuna;
+        $result_array["region"] = $nombreRegion;
+        $result_array["success"] = $is_success;
+
+        return $result_array;
     }
 ?>

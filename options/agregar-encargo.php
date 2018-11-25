@@ -20,106 +20,77 @@
         $mail = strtolower(htmlspecialchars($_POST['email']));
         $celular = htmlspecialchars($_POST['celular']);
         
-        if(empty($_SERVER['CONTENT_TYPE'])) {
-            $passed = false;
-            // echo "Arreglar content type";
-        }
-        $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
+        $db_config = new DbConfig();
+        $db_arr = $db_config->getConnection();
         
-        if ($db->connect_error) {
+        if (!$db_arr["connection"]) {
+            to_error_page($db_arr["message"]);
+            die();
+        } else {
+            $db = $db_arr["db"];
+        }
 
-            if ($passed) {
-                $passed = false;
-                // die("No se pudo recuperar id");
-                $mensajeError = "Error en la conexión al servidor";
+        $count_query = $db->query("SELECT COUNT(*) FROM encargo");
+        $id_query = $db->query("SELECT MAX(id) FROM encargo");
+        if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
+            
+            $fid = 1;
+            
+        } else if (!$count_query || !$id_query) {
+            $mensajeError = "2";
+            to_error_page($mensajeError);
+            die();
+        } else {
+            $id = mysqli_fetch_array($id_query);
+            $numRows = mysqli_fetch_array($count_query);
+            if ($numRows[0] == 0) {
+                $fid = 1;
+            } else {
+                $fid = $id[0] + 1;
             }
+        }
+        
+
+        // VALIDACION
+
+        if(!agregar_encargo_validacion()) {
+
+            $passed = false;
+            $mensajeError = "Error en la validación de los datos";
 
         } else {
-            $enc = $db->set_charset($encoding);
-            if(!$enc) {
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en el encoding";
-                }
+            // Guardar foto
+            $nombreGuardado = DateTime::createFromFormat('U.u', microtime(TRUE)); 
+            $nombreGuardado = $nombreGuardado->format('Y-m-d-H-i-s-u');
+            //$nombreGuardado = date("Y-m-d-H-i-s-u");
+            $extension = pathinfo($_FILES['foto-encargo']['name'], PATHINFO_EXTENSION);
+            $fotoDir = '../fotos/'.$nombreGuardado.'.'.$extension;
+            if (!move_uploaded_file($foto, $fotoDir)) {
+                
+                $mensajeError = "3";
+                to_error_page($mensajeError);
+                die();
+
             }
 
-            $count_query = $db->query("SELECT COUNT(*) FROM encargo");
-            $id_query = $db->query("SELECT MAX(id) FROM encargo");
-            if ($count_query->num_rows === 0 || $id_query->num_rows === 0) {
-                
-                $fid = 1;
-                
-            } else if (!$count_query || !$id_query) {
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en la solicitud al servidor";
-                }
-            } else {
-                $id = mysqli_fetch_array($id_query);
-                $numRows = mysqli_fetch_array($count_query);
-                if ($numRows[0] == 0) {
-                    $fid = 1;
-                } else {
-                    $fid = $id[0] + 1;
+            $stmt = $db->prepare("INSERT INTO encargo (id, descripcion, origen, destino, espacio, kilos, foto, email_encargador, celular_encargador) VALUES (?,?,?,?,?,?,?,?,?);");
+            if ($stmt) {
+                $bp = $stmt->bind_param("isiiiisss", $fid, $descripcion, $origen, $destino, $espacioSol, $kilosSol, $fotoDir, $mail, $celular);
+                if ($bp) {
+                    $ex = $stmt->execute();
                 }
             }
-            
-
-            // VALIDACION
-
-            if(!agregar_encargo_validacion()) {
-                // header("Location: ../index.html");
-                if ($passed) {
-                    $passed = false;
-                    // die("No se pudo recuperar id");
-                    $mensajeError = "Error en la validación de los datos";
-                }
-                
-                // die("Validación de datos incorrecta");
-            } else {
-                // Guardar foto
-                $nombreGuardado = DateTime::createFromFormat('U.u', microtime(TRUE)); 
-                $nombreGuardado = $nombreGuardado->format('Y-m-d-H-i-s-u');
-                //$nombreGuardado = date("Y-m-d-H-i-s-u");
-                $extension = pathinfo($_FILES['foto-encargo']['name'], PATHINFO_EXTENSION);
-                $fotoDir = '../fotos/'.$nombreGuardado.'.'.$extension;
-                if (!move_uploaded_file($foto, $fotoDir)) {
-                    // header...
-                    //move_uploaded_file(basename($foto), $fotoDir);
-                    if ($passed) {
-                        $passed = false;
-                        // die("No se pudo recuperar id");
-                        $mensajeError = "Error en la subida del archivo";
-                    }
-                    
-                    // die('Error al subir foto');
-                }
-
-                $stmt = $db->prepare("INSERT INTO encargo (id, descripcion, origen, destino, espacio, kilos, foto, email_encargador, celular_encargador) VALUES (?,?,?,?,?,?,?,?,?);");
-                if ($stmt) {
-                    $bp = $stmt->bind_param("isiiiisss", $fid, $descripcion, $origen, $destino, $espacioSol, $kilosSol, $fotoDir, $mail, $celular);
-                    if ($bp) {
-                        $ex = $stmt->execute();
-                    }
-                }
-                // CAMBIAR FECHA VIAJE POR FECHA IDA Y VUELTA
-                if(!$stmt || !$bp || !$ex) {
-                    // echo mysqli_error($db);
-                    if ($passed) {
-                        $passed = false;
-                        // die("No se pudo recuperar id");
-                        $mensajeError = "Error en la solicitud al servidor";
-                    }
-                    
-                    // die("No se pudieron ingresar los datos, intente nuevamente.");
-                }
+            // CAMBIAR FECHA VIAJE POR FECHA IDA Y VUELTA
+            if(!$stmt || !$bp || !$ex) {
+                $mensajeError = "2";
+                to_error_page($mensajeError);
+                die();
             }
-
-
-            $db->close();
         }
+
+
+        $db->close();
+        
     }
 ?>
 
@@ -331,7 +302,10 @@
                         <br>
                         <input class='form-control btn btn-primary border' type='submit' value='Ingresar Encargo' onclick='return agregar_encargo_validacion()'>
                         <br>
+                        <br>
                         <button class='btn btn-light form-control border' id='return-button' onclick='index(1)' type='button'>Volver al menú principal</button>
+                        <br>
+                        <br>
                     </div>
                     </form>";
                 } else if ($passed) {

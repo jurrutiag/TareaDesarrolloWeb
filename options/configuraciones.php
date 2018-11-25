@@ -1,17 +1,12 @@
 <?php
-    $server_name = 'localhost';
-    $user_name = 'root';
-    $user_pass = '';
-    $db_name = 'tarea2';
+    require_once("db_config.php");
+
+    $errors = array("0" => "Error en la conexión al servidor","1" => "Error en el encoding", "2" => "Error en la solicitud al servidor", "3" => "Error en la subida de archivo", "4" => "Operación inválida");
 
     $encoding = "utf8";
 
     // Configuracion para objetos DateTime
 
     date_default_timezone_set('Chile/Continental');
-
-    //$user_name = 'cc500218_u';
-    //$user_pass = 'arutrumn';
-    //$db_name = 'cc500218_db';
 
 ?>

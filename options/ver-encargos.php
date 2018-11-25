@@ -15,12 +15,17 @@
             </div>
 
             <div class="row bg-light">
-                
+                    <nav class="navbar navbar-dark bg-dark col-12 flex-md-nowrap">
+                        <input id="search" class="form-control form-control-dark col-md-6 col-12 m-auto" placeholder="Buscar por descripción">
+                    </nav>
+                    
                     <?php
                         require_once("configuraciones.php");
                         require_once("funciones.php");
+                        require_once("../async/generar-tabla.php");
+
                         // Verificar definicion de n
-                        $passed = true;
+                        
                         if (!isset($_GET['n'])) {
                             header("Location: ver-viajes.php?n=1");
                             die("Parámetro no definido");
@@ -33,29 +38,22 @@
 
                         // Se inicia la conexion
 
-                        $db = new mysqli($server_name, $user_name, $user_pass, $db_name);
-                        $enc = $db->set_charset($encoding);
-                        if(!$enc) {
-                            if ($passed) {
-                                $passed = false;
-                                // die("No se pudo recuperar id");
-                                $mensajeError = "Error en el encoding";
-                            }
-                        }
-                        if ($db->connect_error) {
-                            $passed = false;
-                            $mensajeError = "Error en la conexión al servidor";
+                        $db_config = new DbConfig();
+                        $db_arr = $db_config->getConnection();
+                        
+                        if (!$db_arr["connection"]) {
+                            to_error_page($db_arr["message"]);
+                            die();
+                        } else {
+                            $db = $db_arr["db"];
                         }
 
                         // Obtencion del maximo N
 
                         if (!$numRows = mysqli_fetch_array($db->query("SELECT COUNT(*) FROM encargo"))) {
-                            // header("Location: ../index.html");
-                            if ($passed) {
-                                $passed = false;
-                                // die("No se pudo recuperar id");
-                                $mensajeError = "Error en la solicitud al servidor";
-                            }
+                            $mensajeError = "2";
+                            to_error_page($mensajeError);
+                            die();
                         } else {
                             $maxN = ceil($numRows[0] / 5);
 
@@ -81,92 +79,103 @@
 
                         if(!$result) {
                             // echo mysqli_error($db);
-                            if ($passed) {
-                                $passed = false;
-                                // die("No se pudo recuperar id");
-                                $mensajeError = "Error en la solicitud al servidor";
-                            }
+                            $mensajeError = "2";
+                            to_error_page($mensajeError);
+                            die();
                         }
 
-                        if ($passed) {
-                            $tabla = "<table class='table table-responsive table-striped table-hover col-12 col-md-10 m-auto bg-light' id='table'>
-                                        <thead>
-                                            <tr>
-                                                <th scope='col'>#</th>
-                                                <th scope='col'>Origen</th>
-                                                <th scope='col'>Destino</th>
-                                                <th scope='col'>Foto</th>
-                                                <th scope='col'>Espacio</th>
-                                                <th scope='col'>Kilos</th>
-                                                <th scope='col'>Email</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>";
-                            $counter = 1;
-                            while ($row = mysqli_fetch_assoc($result)){
+                        /*$tabla = "<table class='table table-responsive table-striped table-hover col-12 col-md-10 m-auto bg-light' id='table'>
+                                    <thead>
+                                        <tr>
+                                            <th scope='col'>#</th>
+                                            <th scope='col'>Origen</th>
+                                            <th scope='col'>Destino</th>
+                                            <th scope='col'>Foto</th>
+                                            <th scope='col'>Espacio</th>
+                                            <th scope='col'>Kilos</th>
+                                            <th scope='col'>Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+                                    */
+                        $counter = 1;
+                        $ids = array();
+                        $elemNums = array();
+                        $origens = array();
+                        $destinos = array();
+                        $fotos = array();
+                        $espacioDisps = array();
+                        $kilosDisps = array();
+                        $mails = array();
+                        while ($row = mysqli_fetch_assoc($result)){
 
-                                $id = $row['id'];
-                                
-                                $origen = $row["origen"];
-                                $origenArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $origen"));
-                                $regionidOr = $origenArr["region_id"];
-                                $origen = $origenArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidOr"))["nombre"];
-                                
-                                $destino = $row["destino"];
-                                $destinoArr = mysqli_fetch_assoc($db->query("SELECT nombre, region_id FROM comuna WHERE id = $destino"));
-                                $regionidDest = $destinoArr["region_id"];
-                                $destino = $destinoArr["nombre"].' / '.mysqli_fetch_assoc($db->query("SELECT nombre FROM region WHERE id = $regionidDest"))["nombre"];
+                            $id = $row['id'];
+                            
+                            $origen = $row["origen"];
 
-                                $foto = $row['foto'];
+                            $origen_arr = get_region_comuna($db, $origen);
+                            $comunaOrigen = $origen_arr["comuna"];
+                            $regionOrigen = $origen_arr["region"];
+                            $is_success_origen = $origen_arr["success"];
+                    
+                            $destino = $row["destino"];
+                    
+                            $destino_arr = get_region_comuna($db, $destino);
+                            $comunaDestino = $destino_arr["comuna"];
+                            $regionDestino = $destino_arr["region"];
+                            $is_success_destino = $destino_arr["success"];
+                            
+                            $origen = $comunaOrigen.' / '.$regionOrigen;
+                            
+                            $destino = $comunaDestino.' / '.$regionDestino;
 
-                                $espacioDisp = $row['espacio'];
-                                $espacioDisp = mysqli_fetch_array($db->query("SELECT valor FROM espacio_encargo WHERE id = $espacioDisp"))[0];
-                                
-                                $kilosDisp = $row['kilos'];
-                                $kilosDisp = mysqli_fetch_array($db->query("SELECT valor FROM kilos_encargo WHERE id = $kilosDisp"))[0];
+                            $foto = $row['foto'];
 
-                                $mail = $row['email_encargador'];
+                            $espacioDisp = $row['espacio'];
+                            $espacioQuery = $db->query("SELECT valor FROM espacio_encargo WHERE id = $espacioDisp");
+                            $espacioDisp = mysqli_fetch_array($espacioQuery)[0];
+                            
+                            $kilosDisp = $row['kilos'];
+                            $kilosQuery = $db->query("SELECT valor FROM kilos_encargo WHERE id = $kilosDisp");
+                            $kilosDisp = mysqli_fetch_array($kilosQuery)[0];
 
-                                //$origen = utf8_encode($origen);
-                                //$destino = utf8_encode($destino);
-                                //$espacioDisp = utf8_encode($espacioDisp);
-                                //$kilosDisp = utf8_encode($kilosDisp);
-                                //$mail = utf8_encode($mail);
-                                
-                                $elemNum = $counter + 5*($n - 1);
+                            $mail = $row['email_encargador'];
+                            
+                            $elemNum = $counter + 5*($n - 1);
 
-                                if ($origenArr && $destinoArr && $espacioDisp && $kilosDisp) {
-                                    $tabla = $tabla."<tr id='$id' onclick='masInfoEncargos($id)'>
-                                        <th scope='row'> $elemNum </th>
-                                        <td> $origen </td>
-                                        <td> $destino </td>
-                                        <td> <img alt='Foto encargo $id' src='$foto' class='foto-tabla'/> </td>
-                                        <td> $espacioDisp </td>
-                                        <td> $kilosDisp </td>
-                                        <td> $mail </td>
-                                    </tr>";
-                                    
-                                } else {
-                                    if ($passed) {
-                                        $passed = false;
-                                        // die("No se pudo recuperar id");
-                                        $mensajeError = "Error en la solicitud al servidor";
-                                    }
-                                }
-                                $counter += 1;
-                            };
-                            $tabla = $tabla."</tbody></table>";
+                            $is_success = $is_success_destino && $is_success_origen && $espacioQuery && $kilosQuery;
 
-                            if($passed) {
-                                echo $tabla;
+                            if ($is_success) {
+                                /*
+                                $tabla = $tabla."<tr id='$id' onclick='masInfoEncargos($id)'>
+                                    <th scope='row'> $elemNum </th>
+                                    <td> $origen </td>
+                                    <td> $destino </td>
+                                    <td> <img alt='Foto encargo $id' src='$foto' class='foto-tabla'/> </td>
+                                    <td> $espacioDisp </td>
+                                    <td> $kilosDisp </td>
+                                    <td> $mail </td>
+                                </tr>";
+                                */
+                                array_push($ids, $id);
+                                array_push($elemNums, $elemNum);
+                                array_push($origens, $origen);
+                                array_push($destinos, $destino);
+                                array_push($fotos, $foto);
+                                array_push($espacioDisps, $espacioDisp);
+                                array_push($kilosDisps, $kilosDisp);
+                                array_push($mails, $mail);
+
                             } else {
-                                echo mensaje_error($mensajeError, "../index.php");
+                                $mensajeError = "2";
+                                to_error_page($mensajeError);
+                                die();
                             }
-
-                        } else {
-                            echo mensaje_error($mensajeError, "../index.php");
-                        }
-                        
+                            $counter += 1;
+                        };
+                        //$tabla = $tabla."</tbody></table>";
+                        //echo $tabla;
+                        echo generar_tabla_encargos($ids, $elemNums, $origens, $destinos, $fotos, $espacioDisps, $kilosDisps, $mails);
 
                     ?>
                     </tbody>
@@ -175,24 +184,21 @@
             <br>
             <div class="row bg-light">
                 <?php
-                    if ($passed) {
-                        $next = $n + 1;
-                        $prev = $n - 1;
-                        $nextLocation = "ver-encargos.php?n=$next";
-                        $nextLocation = "location.href='$nextLocation'";
+                    $next = $n + 1;
+                    $prev = $n - 1;
+                    $nextLocation = "ver-encargos.php?n=$next";
+                    $nextLocation = "location.href='$nextLocation'";
 
-                        $prevLocation = "ver-encargos.php?n=$prev";
-                        $prevLocation = "location.href='$prevLocation'";
-                        echo "<div class='btn-group m-auto' role='group'>";
-                        if ($prev > 0) {
-                            echo "<button type='button' onclick=$prevLocation class='btn btn-secondary'>Anterior</button>";
-                        }
-                        if ($next <= $maxN) {
-                            echo "<button type='button' onclick=$nextLocation class='btn btn-secondary'>Siguiente</button>";
-                        }
-                        echo "</div>";
+                    $prevLocation = "ver-encargos.php?n=$prev";
+                    $prevLocation = "location.href='$prevLocation'";
+                    echo "<div class='btn-group m-auto' role='group'>";
+                    if ($prev > 0) {
+                        echo "<button type='button' onclick=$prevLocation class='btn btn-secondary'>Anterior</button>";
                     }
-                    
+                    if ($next <= $maxN) {
+                        echo "<button type='button' onclick=$nextLocation class='btn btn-secondary'>Siguiente</button>";
+                    }
+                    echo "</div>";
                 ?>
             </div>
             <br>
