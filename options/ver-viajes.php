@@ -21,6 +21,7 @@
                     <?php
                         require_once("configuraciones.php");
                         require_once("funciones.php");
+                        require_once("../async/generar-tabla.php");
 
                         // Verificar definicion de n
                         $passed = true;
@@ -85,20 +86,17 @@
                             die();
                         }
                         
-                        $tabla = "<table class='table table-responsive table-striped table-hover col-12 col-md-10 m-auto bg-light' id='table'>
-                                    <thead>
-                                        <tr>
-                                            <th scope='col'>#</th>
-                                            <th scope='col'>Origen</th>
-                                            <th scope='col'>Destino</th>
-                                            <th scope='col'>Fecha de Viaje</th>
-                                            <th scope='col'>Espacio</th>
-                                            <th scope='col'>Kilos</th>
-                                            <th scope='col'>Email</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>";
                         $counter = 1;
+
+                        $ids = array();
+                        $elemNums = array();
+                        $origens = array();
+                        $destinos = array();
+                        $fechaIdas = array();
+                        $espacioDisps = array();
+                        $kilosDisps = array();
+                        $mails = array();
+                        
                         while ($row = mysqli_fetch_assoc($result)){
 
                             $id = $row['id'];
@@ -138,27 +136,24 @@
                             $is_success = $is_success_destino && $is_success_origen && $espacioQuery && $kilosQuery;
 
                             if ($is_success) {
-                                $tabla = $tabla."<tr id='$id' onclick='masInfoViajes($id)'>
-                                    <th scope='row'> $elemNum </th>
-                                    <td> $origen </td>
-                                    <td> $destino </td>
-                                    <td> $fechaIda </td>
-                                    <td> $espacioDisp </td>
-                                    <td> $kilosDisp </td>
-                                    <td> $mail </td>
-                                </tr>";
-
+                                array_push($ids, $id);
+                                array_push($elemNums, $elemNum);
+                                array_push($origens, $origen);
+                                array_push($destinos, $destino);
+                                array_push($fechaIdas, $fechaIda);
+                                array_push($espacioDisps, $espacioDisp);
+                                array_push($kilosDisps, $kilosDisp);
+                                array_push($mails, $mail);
                             } else {
-                                
                                 $mensajeError = "2";
                                 to_error_page($mensajeError);
                                 die();
                             }
                             $counter += 1;
                         }
-                        $tabla = $tabla."</tbody></table>";
+                        
 
-                        echo $tabla;
+                        echo generar_tabla_viajes($ids, $elemNums, $origens, $destinos, $fechaIdas, $espacioDisps, $kilosDisps, $mails);
 
                     ?>
                     </tbody>

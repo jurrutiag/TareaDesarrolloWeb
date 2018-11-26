@@ -18,7 +18,8 @@
                     <nav class="navbar navbar-dark bg-dark col-12 flex-md-nowrap">
                         <input id="search" class="form-control form-control-dark col-md-6 col-12 m-auto" placeholder="Buscar por descripción">
                     </nav>
-                    
+                    <div id="search-result" class="col-md-10 col-12 m-auto"></div>
+                    <div id="table-result" class="col-md-10 col-12 m-auto">
                     <?php
                         require_once("configuraciones.php");
                         require_once("funciones.php");
@@ -84,20 +85,6 @@
                             die();
                         }
 
-                        /*$tabla = "<table class='table table-responsive table-striped table-hover col-12 col-md-10 m-auto bg-light' id='table'>
-                                    <thead>
-                                        <tr>
-                                            <th scope='col'>#</th>
-                                            <th scope='col'>Origen</th>
-                                            <th scope='col'>Destino</th>
-                                            <th scope='col'>Foto</th>
-                                            <th scope='col'>Espacio</th>
-                                            <th scope='col'>Kilos</th>
-                                            <th scope='col'>Email</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>";
-                                    */
                         $counter = 1;
                         $ids = array();
                         $elemNums = array();
@@ -107,6 +94,7 @@
                         $espacioDisps = array();
                         $kilosDisps = array();
                         $mails = array();
+
                         while ($row = mysqli_fetch_assoc($result)){
 
                             $id = $row['id'];
@@ -146,17 +134,6 @@
                             $is_success = $is_success_destino && $is_success_origen && $espacioQuery && $kilosQuery;
 
                             if ($is_success) {
-                                /*
-                                $tabla = $tabla."<tr id='$id' onclick='masInfoEncargos($id)'>
-                                    <th scope='row'> $elemNum </th>
-                                    <td> $origen </td>
-                                    <td> $destino </td>
-                                    <td> <img alt='Foto encargo $id' src='$foto' class='foto-tabla'/> </td>
-                                    <td> $espacioDisp </td>
-                                    <td> $kilosDisp </td>
-                                    <td> $mail </td>
-                                </tr>";
-                                */
                                 array_push($ids, $id);
                                 array_push($elemNums, $elemNum);
                                 array_push($origens, $origen);
@@ -165,7 +142,6 @@
                                 array_push($espacioDisps, $espacioDisp);
                                 array_push($kilosDisps, $kilosDisp);
                                 array_push($mails, $mail);
-
                             } else {
                                 $mensajeError = "2";
                                 to_error_page($mensajeError);
@@ -173,13 +149,11 @@
                             }
                             $counter += 1;
                         };
-                        //$tabla = $tabla."</tbody></table>";
-                        //echo $tabla;
+                        
                         echo generar_tabla_encargos($ids, $elemNums, $origens, $destinos, $fotos, $espacioDisps, $kilosDisps, $mails);
 
                     ?>
-                    </tbody>
-                </table>
+                    </div>
             </div>
             <br>
             <div class="row bg-light">
@@ -211,8 +185,9 @@
 
             
         </div>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="../scripts.js"></script>
         <script src="../bootstrap.js"></script>
+        <script src="../search-table.js"></script>
     </body>
 </html>
