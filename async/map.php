@@ -104,7 +104,7 @@
                 <h5>Comuna Destino: $comunaDestino</h5>
                 <h5>Kilos Disponibles: $kilos</h5>
                 <h5>Espacio Disponible: $espacio</h5>
-                <button class='btn btn-light' onclick='masInfoViajes($id, \"options/mas-info-viajes.php?id=\")'>Más información</button>
+                <button class='btn btn-light' onclick='masInfoViajes($id, \"options/mas-info-viajes.php?id=\", true)'>Más información</button>
                 </div>";
 
 

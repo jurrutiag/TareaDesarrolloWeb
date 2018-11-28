@@ -76,9 +76,12 @@ function comunaDestino() {
 }
 
 
-function masInfoViajes(n, loc='mas-info-viajes.php?id=') {
-    location.href = loc + n.toString();
-
+function masInfoViajes(n, loc='mas-info-viajes.php?id=', newWindow=false) {
+    if (newWindow) {
+        window.open(loc + n.toString());
+    } else {
+        location.href = loc + n.toString();
+    }
 }
 
 function loadMasInfoViajes() {
@@ -262,6 +265,7 @@ function validarFecha(dat) {
     today.setHours(0);
     today.setMilliseconds(0);
     today.setMinutes(0);
+    today.setSeconds(0);
 
     var sepDate = dat.split('/');
     var dia = parseInt(sepDate[0]);
@@ -273,7 +277,6 @@ function validarFecha(dat) {
     }
 
     var datDay = new Date(anio, mes-1, dia);
-
     // anios bisiestos
     if ((anio % 4 == 0 && anio % 100 != 0) || anio % 400 == 0) {
         diasMeses[1] = 29;

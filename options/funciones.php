@@ -8,6 +8,11 @@
     function validarFecha($dat) {
         
         $today = new DateTime('NOW');
+
+        $today->setTime($today->format('H'), 0);
+        $today->setTime($today->format('i'), 0);
+        $today->setTime($today->format('s'), 0);
+        
         $datetime = new DateTime(reformatDate($dat));
         
         if ($today > $datetime) {

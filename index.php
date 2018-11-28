@@ -47,11 +47,11 @@
         <script src="search.js"></script>
         <script src="bootstrap.js"></script>
         
-        <!--
+        
         <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG195ROSB1lHUnAgFQjLMqBBBE7yq9Tss&callback=initMap">
         </script>
-        -->
+        
         <script src="map.js"></script>
     </body>
 
