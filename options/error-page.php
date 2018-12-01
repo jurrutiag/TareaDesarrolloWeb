@@ -2,7 +2,8 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../boostrap v4 w3c fix.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../boostrap_v4_w3c_fix.css">
         <link rel="stylesheet" href="../styles.css">
 
         <title>Error</title>

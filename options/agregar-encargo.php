@@ -65,6 +65,7 @@
             //$nombreGuardado = date("Y-m-d-H-i-s-u");
             $extension = pathinfo($_FILES['foto-encargo']['name'], PATHINFO_EXTENSION);
             $fotoDir = '../fotos/'.$nombreGuardado.'.'.$extension;
+            
             if (!move_uploaded_file($foto, $fotoDir)) {
                 
                 $mensajeError = "3";
@@ -98,9 +99,10 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../boostrap v4 w3c fix.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../boostrap_v4_w3c_fix.css">
         <link rel="stylesheet" href="../styles.css">
-        <title>Agregar Encargo</title>
+        <title>Agregar&#160;Encargo</title>
     </head>
     <body class="bg-light">
 
@@ -310,7 +312,7 @@
                     </form>";
                 } else if ($passed) {
                     echo "<div class='list-group col-md-6 col-12 m-auto'>
-                        <li class='list-group-item active bg-success'>Encargo Ingresado</li>
+                        <h6 class='list-group-item active bg-success'>Encargo Ingresado</h6>
                         <a class='list-group-item list-group-item-action' href='../index.php'>Volver al menú principal</a>
                         </div>";                        
                 }

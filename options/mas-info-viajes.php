@@ -3,10 +3,11 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../boostrap v4 w3c fix.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../boostrap_v4_w3c_fix.css">
         <link rel="stylesheet" href="../styles.css">
 
-        <title>Más Información Viajes</title>
+        <title>Más&#160;Información&#160;Viajes</title>
     </head>
     <body onload="loadMasInfoViajes()" class="bg-light">
 
@@ -29,7 +30,7 @@
             </div>
             <br>
             <div class='row bg-light'>
-            <button type='button' id='return-button' class='btn btn-light border m-auto' onclick='goBack()'>Volver atrás</button>
+            <button type='button' id='back-button' class='btn btn-light border m-auto' onclick='goBack()'>Volver atrás</button>
             </div>
             <br>
             <br>

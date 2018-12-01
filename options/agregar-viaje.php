@@ -92,10 +92,11 @@
 <html lang="es">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../boostrap v4 w3c fix.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../boostrap_v4_w3c_fix.css">
         <link rel="stylesheet" href="../styles.css">
 
-        <title>Agregar Viaje</title>
+        <title>Agregar&#160;Viaje</title>
     </head>
     <body class="bg-light">
         
@@ -301,7 +302,7 @@
                         </form>";
                     } else if ($passed) {
                         echo "<div class='list-group col-md-6 col-12 m-auto'>
-                            <li class='list-group-item active bg-success'>Viaje Ingresado</li>
+                            <h6 class='list-group-item active bg-success'>Viaje Ingresado</h6>
                             <a class='list-group-item list-group-item-action' href='../index.php'>Volver al menú principal</a>
                             </div>";
                     }

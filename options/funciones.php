@@ -192,7 +192,7 @@
 
     function mensaje_error($mensajeError, $returnPath) {
         echo "<div class='list-group col-md-6 col-12 m-auto'>
-            <li class='list-group-item active bg-warning'>$mensajeError</li>
+            <h5 class='list-group-item active bg-warning'>$mensajeError</h5>
             </div>";
     }
 

@@ -117,7 +117,7 @@
                     $latdest = $resp_dest["results"][0]["geometry"]["location"]["lat"];
                     $lngdest = $resp_dest["results"][0]["geometry"]["location"]["lng"];
 
-                    $data["data".$i] = array(array("lat"=>$lator, "lng"=>$lngor), array("lat"=>$latdest, "lng"=>$lngdest), "title" => "Desde ".$rawAddOr.", Hasta ".$rawAddDest, "tag_text" => $tag_text);
+                    $data["data".$i] = array(array("lat"=>$lator, "lng"=>$lngor), array("lat"=>$latdest, "lng"=>$lngdest), "title" => "Desde ".$rawAddOr.", Hasta ".$rawAddDest." en la fecha ".$fecha_ida, "tag_text" => $tag_text);
                 }
                 $i += 1;
             }

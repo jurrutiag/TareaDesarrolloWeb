@@ -34,7 +34,7 @@
     }
 
     function generar_tabla_encargos_resumida($ids, $descs , $origens, $destinos, $fotos) {
-        $tabla = "<table class='table table-responsive table-striped table-hover col-12 m-auto bg-light' id='table'>
+        $tabla = "<table class='table table-responsive table-striped table-hover col-12 m-auto bg-light' id='table-search'>
                 <thead>
                     <tr>
                         <th scope='col'>Descripción</th>
@@ -46,7 +46,7 @@
                 <tbody>";
 
         for ($i = 0; $i < sizeof($ids); $i++) {
-            $tabla = $tabla."<tr id='$ids[$i]' onclick='masInfoEncargos($ids[$i])'>
+            $tabla = $tabla."<tr id='$ids[$i]-res' onclick='masInfoEncargos($ids[$i])'>
                 <td> $descs[$i] </td>
                 <td> $origens[$i] </td>
                 <td> $destinos[$i] </td>
